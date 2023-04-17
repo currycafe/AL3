@@ -19,7 +19,7 @@ public: // メンバ関数
 	/// コンストクラタ
 	/// </summary>
 	GameScene();
-	
+
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -45,11 +45,7 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
-	Sprite* sprite_ = nullptr;
-	uint32_t textureHandle_ = 0;
-
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	
 };
