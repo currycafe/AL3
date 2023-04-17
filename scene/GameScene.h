@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "DebugCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -45,7 +46,25 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
+
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+
+	//テクスチャハンドル
+	uint32_t texturHandle_ = 0;
+	//スプライト生成
+	Sprite* sprite_ = nullptr;
+
+	//3Dモデル
+	Model* model_ = nullptr;
+
+	WorldTransform worldTransform_;
+	ViewProjection viewProjection_;
+
+	float imputFloat3[3] = { 0,0,0 };
+
+	DebugCamera* debugCamera_ = nullptr;
+
+
 };
