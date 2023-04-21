@@ -2,7 +2,7 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-
+#include "Input.h"
 
 
 
@@ -18,6 +18,8 @@ private:
 	Model* model_ = nullptr;
 	uint32_t textureHundle_ = 0u;
 
+	Input* input_ = nullptr;
+	
 	void Initialize();
 
 };

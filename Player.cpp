@@ -1,6 +1,7 @@
 #include "Player.h"
-
+#include "Input.h"
 #include <cassert>
+
 
 void Player::Initialize(Model* model, uint32_t textureHundle)
 {
@@ -8,6 +9,7 @@ void Player::Initialize(Model* model, uint32_t textureHundle)
 	model_ = model;
 	worldTransform_.Initialize();
 	textureHundle_ = textureHundle;
+	input_ = Input::GetInstance();
 }
 
 void Player::Updete()
