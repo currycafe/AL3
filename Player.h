@@ -20,7 +20,7 @@ private:
 
 	Input* input_ = nullptr;
 	
-	void Initialize();
+	//void Initialize();
 
 };
 
