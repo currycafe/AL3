@@ -90,8 +90,8 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 
 
 
-Matrix4x4 operator*=(Matrix4x4& m1, const Matrix4x4& m2) {
-	Matrix4x4 result;
+Matrix4x4& operator*=(Matrix4x4& m1, const Matrix4x4& m2) {
+	Matrix4x4 result = {};
 	for (size_t i = 0;i < 4;i++) {
 		for (rsize_t j = 0;j < 4;j++) {
 			for (rsize_t k = 0;k < 4;k++) {
