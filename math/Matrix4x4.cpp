@@ -72,8 +72,8 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 	Matrix4x4 matScale = MakeScaleMatrix(scale);
 
 	Matrix4x4 matRotX = MakeRotateXMatrix(rot.x);
-	Matrix4x4 matRotY = MakeRotateXMatrix(rot.y);
-	Matrix4x4 matRotZ = MakeRotateXMatrix(rot.z);
+	Matrix4x4 matRotY = MakeRotateYMatrix(rot.y);
+	Matrix4x4 matRotZ = MakeRotateZMatrix(rot.z);
 
 	Matrix4x4 matRot = matRotZ * matRotX * matRotY;
 
@@ -83,11 +83,6 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 
 	return result;
 }
-
-
-
-
-
 
 
 Matrix4x4& operator*=(Matrix4x4& m1, const Matrix4x4& m2) {

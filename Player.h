@@ -19,8 +19,6 @@ private:
 	uint32_t textureHundle_ = 0u;
 
 	Input* input_ = nullptr;
-	
-	//void Initialize();
 
 };
 
