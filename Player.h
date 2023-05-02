@@ -3,6 +3,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Input.h"
+#include"PlayerBullet.h"
 
 
 
@@ -12,7 +13,7 @@ public:
 	void Initialize(Model*model,uint32_t textureHundle);
 	void Updete();
 	void Draw(ViewProjection&viewProjection);
-
+	void Attack();
 
 private:
 	WorldTransform worldTransform_;
@@ -20,6 +21,6 @@ private:
 	uint32_t textureHundle_ = 0u;
 
 	Input* input_ = nullptr;
-
+	PlayerBullet* bullet_ = nullptr;
 };
 

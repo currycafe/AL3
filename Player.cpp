@@ -19,8 +19,6 @@ void Player::Updete()
 
 	const float kCharacterSpeed = 0.2f;
 
-
-
 	if (input_->PushKey(DIK_LEFT)) {
 		move.x -= kCharacterSpeed;
 	}
@@ -34,22 +32,11 @@ void Player::Updete()
 		move.y -= kCharacterSpeed;
 	}
 
-
-
 	worldTransform_.translation_.x += move.x;
 	worldTransform_.translation_.y += move.y;
 	worldTransform_.translation_.z += move.z;
 
-
-
-
-
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-
-
-
-
-
 
 	const float kMoveLimitX = 10.0f;
 	const float kMoveLimitY = 10.0f;
@@ -68,11 +55,27 @@ void Player::Updete()
 	ImGui::SliderFloat3("position", sliderValue, -20.0f, 20.0f);
 	worldTransform_.translation_ = { sliderValue[0],sliderValue[1],sliderValue[2] };
 	ImGui::End();
+	Attack();
+
+	if (bullet_) {
+		bullet_->Update();
+	}
+
 
 }
 
-void Player::Draw(ViewProjection& viewProjection)
-{
-
+void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHundle_);
+	if (bullet_) {
+		bullet_->Draw(viewProjection);
+	}
+}
+
+
+void Player::Attack() {
+	if (input_->TriggerKey(DIK_SPACE)) {
+		PlayerBullet* newBullet = new PlayerBullet();
+		newBullet->Initialize(model_, worldTransform_.translation_);
+		bullet_ = newBullet;
+	}
 }
