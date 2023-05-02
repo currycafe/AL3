@@ -13,6 +13,7 @@ public:
 	void Updete();
 	void Draw(ViewProjection&viewProjection);
 
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;

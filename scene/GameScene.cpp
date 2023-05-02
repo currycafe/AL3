@@ -11,6 +11,7 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 }
 
+
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
