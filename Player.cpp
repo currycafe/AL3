@@ -4,6 +4,15 @@
 #include"ImGuiManager.h"
 
 
+//Player::~Player()
+//{
+//	for (PlayerBullet* bullet : bullets_) {
+//		delete bullet_;
+//	}
+//
+//}
+
+
 void Player::Initialize(Model* model, uint32_t textureHundle)
 {
 	assert(model);
@@ -60,7 +69,9 @@ void Player::Updete()
 	if (bullet_) {
 		bullet_->Update();
 	}
-
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Update();
+	}
 
 }
 
@@ -69,13 +80,24 @@ void Player::Draw(ViewProjection& viewProjection) {
 	if (bullet_) {
 		bullet_->Draw(viewProjection);
 	}
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
+	}
 }
 
 
 void Player::Attack() {
+	/*if (bullet_) {
+		delete bullet_;
+		bullet_ = nullptr;
+	}*/
+
 	if (input_->TriggerKey(DIK_SPACE)) {
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }
+
+
