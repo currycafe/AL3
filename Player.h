@@ -14,7 +14,7 @@ public:
 	void Updete();
 	void Draw(ViewProjection&viewProjection);
 	void Attack();
-
+	//void Rotate();
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;

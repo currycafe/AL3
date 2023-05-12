@@ -32,6 +32,17 @@ void Player::Updete()
 		move.y -= kCharacterSpeed;
 	}
 
+	const float kRotSpeed = 0.2f;
+	if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotation_.y -= kRotSpeed;
+	}
+	else if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotation_.y += kRotSpeed;
+	}
+
+
+
+
 	worldTransform_.translation_.x += move.x;
 	worldTransform_.translation_.y += move.y;
 	worldTransform_.translation_.z += move.z;
@@ -63,6 +74,20 @@ void Player::Updete()
 
 
 }
+
+
+//void Player::Rotate() {
+//	const float kRotSpeed = 0.02f;
+//	if (input_->PushKey(DIK_A)) {
+//		worldTransform_.translation_.y -= kRotSpeed;
+//	}
+//	else if (input_->PushKey(DIK_D)) {
+//		worldTransform_.translation_.y += kRotSpeed;
+//	}
+//
+//
+//
+//}
 
 void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHundle_);
