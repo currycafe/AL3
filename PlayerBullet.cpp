@@ -1,20 +1,27 @@
 #include"PlayerBullet.h"
 #include <cassert>
 
-void PlayerBullet::Initialize(Model* model, const Vector3& pos) {
+void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 	assert(model);
 	model_ = model;
 
 	texturehandle_ = TextureManager::Load("sample.png");
 
-	world_.Initialize();
-	world_.translation_ = pos;
+	worldTransform_.Initialize();
+	worldTransform_.translation_ = position;
+	velocity_ = velocity;
 }
 
 void PlayerBullet::Update() {
-	world_.UpdateMatrix();
+	worldTransform_.translation_.x += velocity_.x;
+	worldTransform_.translation_.y += velocity_.y;
+	worldTransform_.translation_.z += velocity_.z;
+	worldTransform_.UpdateMatrix();
+	if (--deathTimer_ <= 0) {
+		isDead_ = true;
+	}
 }
 
 void PlayerBullet::Draw(ViewProjection& viewProjection) {
-	model_->Draw(world_, viewProjection, texturehandle_);
+	model_->Draw(worldTransform_, viewProjection, texturehandle_);
 }

@@ -2,6 +2,7 @@
 #include "Input.h"
 #include <cassert>
 #include"ImGuiManager.h"
+#include"MathUtility.h"
 
 
 Player::~Player()
@@ -28,6 +29,14 @@ void Player::Initialize(Model* model, uint32_t textureHundle)
 
 void Player::Updete()
 {
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+		});
+
 	Vector3 move = { 0,0,0 };
 
 	const float kCharacterSpeed = 0.2f;
@@ -48,6 +57,14 @@ void Player::Updete()
 	worldTransform_.translation_.x += move.x;
 	worldTransform_.translation_.y += move.y;
 	worldTransform_.translation_.z += move.z;
+
+	const float kRotSpeed = 0.2f;
+	if (input_->PushKey(DIK_A)) {
+		worldTransform_.rotation_.y -= kRotSpeed;
+	}
+	else if (input_->PushKey(DIK_D)) {
+		worldTransform_.rotation_.y += kRotSpeed;
+	}
 
 	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 
@@ -81,9 +98,9 @@ void Player::Updete()
 
 void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHundle_);
-	if (bullet_) {
+	/*if (bullet_) {
 		bullet_->Draw(viewProjection);
-	}
+	}*/
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
@@ -92,8 +109,11 @@ void Player::Draw(ViewProjection& viewProjection) {
 
 void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+		velocity = TransformNomal(velocity, worldTransform_.matWorld_);
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 		bullet_ = newBullet;
 		bullets_.push_back(newBullet);
 	}
