@@ -11,11 +11,11 @@
 class Player
 {
 public:
+	~Player();
 	void Initialize(Model* model, uint32_t textureHundle);
 	void Updete();
 	void Draw(ViewProjection& viewProjection);
 	void Attack();
-	//~Player();
 
 private:
 	WorldTransform worldTransform_;
