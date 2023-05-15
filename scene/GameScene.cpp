@@ -8,6 +8,7 @@ GameScene::GameScene() {}
 GameScene::~GameScene() {
 	delete model_;
 	delete player_;
+	delete enemy_;
 	delete debugCamera_;
 }
 
@@ -26,6 +27,9 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	player_->Initialize(model_, textureHandle_);
 
+	enemy_ = new Enemy();
+	enemy_->Initialize(model_, {0.0f,0.0f,50.0f});
+
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -36,14 +40,14 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 	player_->Updete();
-
+	enemy_->Updete();
 
 
 #ifdef  _DEBUG
 	if (input_->TriggerKey(DIK_SPACE)) {
 		isDebugCameraActive_ = true;
 	}
-	
+
 
 
 #endif //  _DEBUG
@@ -89,6 +93,7 @@ void GameScene::Draw() {
 	/// </summary>
 	//model_->Draw(worldTransform_, viewProjection_, textureHandle_);
 	player_->Draw(viewProjection_);
+	enemy_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
