@@ -16,7 +16,7 @@ void Enemy::Initialize(Model* model, const Vector3& position)
 void Enemy::Updete()
 {
 	worldTransform_.UpdateMatrix();
-	worldTransform_.translation_.z -= 1.0f;
+	worldTransform_.translation_.z -= 0.2f;
 }
 
 void Enemy::Draw(ViewProjection& viewProjection)
