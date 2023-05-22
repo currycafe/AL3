@@ -9,10 +9,6 @@
 class Enemy
 {
 public:
-	enum class Phase {
-		Approach,
-		Leave,
-	};
 	void Initialize(Model* model, const Vector3& position);
 	void Updete();
 	void Draw(ViewProjection& viewProjection);
@@ -22,7 +18,11 @@ private:
 	Model* model_ = nullptr;
 	uint32_t textureHundle_ = 0u;
 
-	Phase phase_ = Phase::Approach;
+	//enum class Phase {
+	//	Approach,
+	//	Leave,
+	//};
+	//Phase phase_ = Phase::Approach;
 
 };
 

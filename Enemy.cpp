@@ -16,8 +16,9 @@ void Enemy::Initialize(Model* model, const Vector3& position)
 void Enemy::Updete()
 {
 	worldTransform_.UpdateMatrix();
-	//worldTransform_.translation_.z -= 0.2f;
-	switch (phase_) {
+	worldTransform_.translation_.z -= 0.2f;
+
+	/*switch (phase_) {
 	case Enemy::Phase::Approach:
 	default:
 		worldTransform_.translation_.z -= 0.2f;
@@ -29,7 +30,7 @@ void Enemy::Updete()
 	case Enemy::Phase::Leave:
 		worldTransform_.translation_.y -= 0.2f;
 		break;
-	}
+	}*/
 }
 
 void Enemy::Draw(ViewProjection& viewProjection)
