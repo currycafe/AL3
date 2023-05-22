@@ -40,7 +40,7 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 	player_->Updete();
-	enemy_->Updete();
+	enemy_->Update();
 
 
 #ifdef  _DEBUG

@@ -1,16 +1,20 @@
 #pragma once
-#include"Model.h"
-#include"Vector3.h"
-#include"ViewProjection.h"
-#include"WorldTransform.h"
-
-class PlayerBullet {
+#include "Model.h"
+#include "Vector3.h"
+#include "ViewProjection.h"
+#include "WorldTransform.h"
+class EnemyBullet
+{
 public:
-	
 	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
 	void Update();
 	void Draw(ViewProjection& viewProjection);
 	bool IsDead()const { return isDead_; }
+
+
+
+
+
 private:
 
 	WorldTransform worldTransform_;
@@ -22,3 +26,4 @@ private:
 	bool isDead_ = false;
 
 };
+
