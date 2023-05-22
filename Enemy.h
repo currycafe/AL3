@@ -5,9 +5,10 @@
 #include "Input.h"
 #include "EnemyBullet.h"
 #include <list>
+#include "Player.h"
 
-
-
+class Player;
+Player* player_ = nullptr;
 
 class Enemy
 {
@@ -25,6 +26,18 @@ public:
 	void Fire();
 	static const int kFireinterval = 10;
 	void ApproachFire();
+
+	void SetPlayer(Player* player) { player_ = player; }
+	Vector3 GetWorldPosition();
+
+
+
+
+
+
+
+
+
 
 private:
 	WorldTransform worldTransform_;

@@ -16,6 +16,7 @@ public:
 	void Updete();
 	void Draw(ViewProjection& viewProjection);
 	void Attack();
+	Vector3 GetWorldPosition();
 
 private:
 	WorldTransform worldTransform_;
