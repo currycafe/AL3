@@ -5,6 +5,7 @@
 #include "Input.h"
 #include"PlayerBullet.h"
 #include<list>
+#include"Enemy.h"
 
 
 
@@ -16,6 +17,7 @@ public:
 	void Updete();
 	void Draw(ViewProjection& viewProjection);
 	void Attack();
+	//ワールド座標を取得
 	Vector3 GetWorldPosition();
 
 private:

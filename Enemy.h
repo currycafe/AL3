@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
@@ -7,8 +7,8 @@
 #include <list>
 #include "Player.h"
 
+
 class Player;
-Player* player_ = nullptr;
 
 class Enemy
 {
@@ -32,13 +32,6 @@ public:
 
 
 
-
-
-
-
-
-
-
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
@@ -48,7 +41,11 @@ private:
 
 	std::list<EnemyBullet*>bullets_;
 
-	Phase phase_ = Phase::Approach;
+	Enemy::Phase phase_ = Enemy::Phase::Approach;
 	int32_t fireTimer = 0;
+
+	//自キャラ
+	//Enemy* enemy_ = nullptr;
+	Player* player_ = nullptr;
 };
 

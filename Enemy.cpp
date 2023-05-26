@@ -1,8 +1,10 @@
-#include "Enemy.h"
+﻿#include "Enemy.h"
 #include "Input.h"
 #include <cassert>
-#include"ImGuiManager.h"
-#include"MathUtility.h"
+#include "ImGuiManager.h"
+#include "MathUtility.h"
+#include "Player.h"
+#include <cmath>
 
 Enemy::~Enemy()
 {
@@ -42,7 +44,7 @@ void Enemy::Update()
 	switch (phase_) {
 	case Enemy::Phase::Approach:
 	default:
-
+		//今、止めてます。0.0です
 		worldTransform_.translation_.z -= 0.0f;
 		if (worldTransform_.translation_.z < 0.0f) {
 			phase_ = Enemy::Phase::Leave;
@@ -96,9 +98,26 @@ void Enemy::Fire()
 	//	//bullets_.push_back(newBullet);
 	//}
 
-	const float kBulletSpeed = -1.0f;
-	Vector3 velocity(0, -kBulletSpeed, kBulletSpeed);
-	velocity = TransformNomal(velocity, worldTransform_.matWorld_);
+	const float kBulletSpeed = 1.0f;
+	Vector3 a = GetWorldPosition();
+	Vector3 b = player_->GetWorldPosition();
+	Vector3 c = {};
+	c.x = b.x - a.x;
+	c.y = b.y - a.y;
+	c.z = b.z - a.z;
+
+	//c.x /= 100.0f;
+	//c.y /= 100.0f;
+	//c.z /= 100.0f;
+
+
+	float length = sqrtf(c.x * c.x + c.y * c.y + c.z * c.z);
+	Vector3 dir = { c.x / length, c.y / length, c.z / length };
+
+	Vector3 velocity(kBulletSpeed* dir.x, kBulletSpeed*dir.y, kBulletSpeed* dir.z);
+	//velocity = TransformNomal(velocity, worldTransform_.matWorld_);
+
+
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 	//bullet_ = newBullet;
@@ -108,7 +127,6 @@ void Enemy::Fire()
 
 void Enemy::ApproachFire() {
 	fireTimer = kFireinterval;
-
 }
 
 Vector3 Enemy::GetWorldPosition() {
