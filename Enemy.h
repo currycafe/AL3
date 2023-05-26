@@ -22,7 +22,7 @@ private:
 	Model* model_ = nullptr;
 	uint32_t textureHundle_ = 0u;
 
-	Phase phase_ = Phase::Approach;
+	Enemy::Phase phase_ = Enemy::Phase::Approach;
 
 };
 
