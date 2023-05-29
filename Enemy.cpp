@@ -107,6 +107,6 @@ void Enemy::Fire()
 
 void Enemy::ApproachFire() {
 	fireTimer = kFireinterval;
-	
+
 }
 
