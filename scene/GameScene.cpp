@@ -28,7 +28,7 @@ void GameScene::Initialize() {
 	player_->Initialize(model_, textureHandle_);
 
 	enemy_ = new Enemy();
-	enemy_->Initialize(model_, {0.0f,0.0f,50.0f});
+	enemy_->Initialize(model_, { 0.0f,0.0f,50.0f });
 
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
@@ -41,6 +41,7 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 	player_->Updete();
 	enemy_->Update();
+	CheckAllCollisions();
 
 
 #ifdef  _DEBUG
@@ -113,4 +114,75 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckAllCollisions() {
+	Vector3 posA;
+	Vector3 posB;
+
+	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+
+#pragma region
+	posA = player_->GetWorldPosition();
+	for (EnemyBullet* bullets : enemyBullets) {
+		posB = bullets->GetWorldPosition();
+
+		float distance = (posB.x - posA.x) * (posB.x - posA.x) +
+			(posB.y - posA.y) * (posB.y - posA.y) +
+			(posB.z - posA.z) * (posB.z - posA.z);
+
+		if (distance <= player_->GetRadius() + bullets->GetRadius()) {
+			player_->OnCollision();
+			bullets->OnCollision();
+		}
+	}
+
+#pragma endregion
+
+
+#pragma region
+	posA = enemy_->GetWorldPosition();
+	for (PlayerBullet* bullets : playerBullets) {
+		posB = bullets->GetWorldPosition();
+
+		float distance = (posB.x - posA.x) * (posB.x - posA.x) +
+			(posB.y - posA.y) * (posB.y - posA.y) +
+			(posB.z - posA.z) * (posB.z - posA.z);
+
+		if (distance <= player_->GetRadius() + bullets->GetRadius()) {
+			enemy_->OnCollision();
+			bullets->OnCollision();
+		}
+	}
+#pragma endregion
+
+#pragma region
+	for (PlayerBullet* playerbullets : playerBullets) {
+		for (EnemyBullet* enemybullets : enemyBullets) {
+			posA = playerbullets->GetWorldPosition();
+			posB = enemybullets->GetWorldPosition();
+			float distance = (posB.x - posA.x) * (posB.x - posA.x) +
+				(posB.y - posA.y) * (posB.y - posA.y) +
+				(posB.z - posA.z) * (posB.z - posA.z);
+
+			if (distance <= playerbullets->GetRadius() + enemybullets->GetRadius()) {
+				playerbullets->OnCollision();
+				enemybullets->OnCollision();
+			}
+		}
+	}
+
+
+
+
+
+
+
+#pragma endregion
+
+
+
+
+
 }

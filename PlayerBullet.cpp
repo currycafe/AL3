@@ -1,4 +1,4 @@
-#include"PlayerBullet.h"
+﻿#include"PlayerBullet.h"
 #include <cassert>
 
 void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
@@ -25,3 +25,17 @@ void PlayerBullet::Update() {
 void PlayerBullet::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, texturehandle_);
 }
+
+void PlayerBullet::OnCollision() {
+	isDead_ = true;
+}
+Vector3 PlayerBullet::GetWorldPosition() {
+	Vector3 worldPos;
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
+}
+
+

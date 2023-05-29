@@ -119,6 +119,10 @@ void Player::Attack() {
 	}
 }
 
+void Player::OnCollision(){
+	//何もしない
+}
+
 Vector3 Player::GetWorldPosition() {
 	Vector3 worldPos;
 	worldPos.x = worldTransform_.translation_.x;

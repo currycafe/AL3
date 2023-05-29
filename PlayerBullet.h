@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include"Model.h"
 #include"Vector3.h"
 #include"ViewProjection.h"
@@ -11,6 +11,10 @@ public:
 	void Update();
 	void Draw(ViewProjection& viewProjection);
 	bool IsDead()const { return isDead_; }
+	void OnCollision();
+	float GetRadius() { return radius_; }
+	Vector3 GetWorldPosition();
+
 private:
 
 	WorldTransform worldTransform_;
@@ -21,4 +25,5 @@ private:
 	int32_t deathTimer_ = kLifeTime;
 	bool isDead_ = false;
 
+	float radius_ = 1.0f;
 };

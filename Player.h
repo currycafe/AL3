@@ -19,6 +19,9 @@ public:
 	void Attack();
 	//ワールド座標を取得
 	Vector3 GetWorldPosition();
+	void OnCollision();
+	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
+	float GetRadius() { return radius_; }
 
 private:
 	WorldTransform worldTransform_;
@@ -29,6 +32,7 @@ private:
 	PlayerBullet* bullet_ = nullptr;
 
 	std::list<PlayerBullet*>bullets_;
+	float radius_ = 1.0f;
 
 
 };

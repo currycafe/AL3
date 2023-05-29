@@ -1,4 +1,4 @@
-#include "EnemyBullet.h"
+﻿#include "EnemyBullet.h"
 #include <cassert>
 
 void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
@@ -25,5 +25,20 @@ void EnemyBullet::Update() {
 
 void EnemyBullet::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, texturehandle_);
+}
+
+void EnemyBullet::OnCollision() {
+	//デスflagを立てる
+	isDead_ = true;
+}
+
+Vector3 EnemyBullet::GetWorldPosition()
+{
+	Vector3 worldPos;
+	worldPos.x = worldTransform_.translation_.x;
+	worldPos.y = worldTransform_.translation_.y;
+	worldPos.z = worldTransform_.translation_.z;
+
+	return worldPos;
 }
 

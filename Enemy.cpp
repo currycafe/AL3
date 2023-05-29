@@ -131,6 +131,10 @@ void Enemy::ApproachFire() {
 	fireTimer = kFireinterval;
 }
 
+void Enemy::OnCollision(){
+	//何もしない
+}
+
 Vector3 Enemy::GetWorldPosition() {
 	Vector3 worldPos;
 	worldPos.x = worldTransform_.translation_.x;
