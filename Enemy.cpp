@@ -16,6 +16,8 @@ Enemy::~Enemy()
 	}
 }
 
+
+
 void Enemy::Initialize(Model* model, const Vector3& position)
 {
 	assert(model);
