@@ -38,12 +38,14 @@ void GameScene::Initialize() {
 
 	enemy_->SetPlayer(player_);
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	skydome_ = new Skydome();
+	skydome_->Initialize(modelSkydome_);
 }
 
 void GameScene::Update() {
 	player_->Updete();
 	enemy_->Update();
-
+	skydome_->Update();
 	CheckAllCollisions();
 
 
@@ -98,7 +100,7 @@ void GameScene::Draw() {
 	//model_->Draw(worldTransform_, viewProjection_, textureHandle_);
 	player_->Draw(viewProjection_);
 	enemy_->Draw(viewProjection_);
-	
+	skydome_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

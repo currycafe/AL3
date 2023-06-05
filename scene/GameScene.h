@@ -66,11 +66,11 @@ private: // メンバ変数
 	Player* player_ = nullptr;
 	Enemy* enemy_ = nullptr;
 
-
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
 	//float imputFloat3[3] = { 0,0,0 };
 
+	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	
 };
