@@ -8,9 +8,12 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Player.h"
-#include"DebugCamera.h"
-#include"Enemy.h"
-#include"Skydome.h"
+#include "DebugCamera.h"
+#include "Enemy.h"
+#include "Skydome.h"
+#include "RailCamera.h"
+
+
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -68,6 +71,7 @@ private: // メンバ変数
 
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
+	RailCamera* railCamera_ = nullptr;
 	//float imputFloat3[3] = { 0,0,0 };
 
 	Skydome* skydome_ = nullptr;

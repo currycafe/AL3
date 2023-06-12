@@ -13,7 +13,7 @@ class Player
 {
 public:
 	~Player();
-	void Initialize(Model* model, uint32_t textureHundle);
+	void Initialize(Model* model, uint32_t textureHundle, const Vector3& position);
 	void Updete();
 	void Draw(ViewProjection& viewProjection);
 	void Attack();
@@ -22,7 +22,7 @@ public:
 	void OnCollision();
 	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
 	float GetRadius() { return radius_; }
-
+	void SetParent(const WorldTransform* parent);
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;

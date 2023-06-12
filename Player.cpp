@@ -18,13 +18,13 @@ Player::~Player()
 }
 
 
-void Player::Initialize(Model* model, uint32_t textureHundle)
-{
+void Player::Initialize(Model* model, uint32_t textureHundle, const Vector3& position){
 	assert(model);
 	model_ = model;
 	worldTransform_.Initialize();
 	textureHundle_ = textureHundle;
 	input_ = Input::GetInstance();
+	worldTransform_.translation_ = position;
 }
 
 void Player::Updete()
@@ -66,10 +66,9 @@ void Player::Updete()
 		worldTransform_.rotation_.y += kRotSpeed;
 	}
 
-	worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 
-	const float kMoveLimitX = 10.0f;
-	const float kMoveLimitY = 10.0f;
+	const float kMoveLimitX = 300.0f;
+	const float kMoveLimitY = 300.0f;
 
 	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
 	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
@@ -78,7 +77,9 @@ void Player::Updete()
 
 
 	//行列転送
-	worldTransform_.TransferMatrix();
+	worldTransform_.UpdateMatrix();
+	/*worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
+	worldTransform_.TransferMatrix();*/
 
 	ImGui::Begin("player");
 	float sliderValue[3] = { worldTransform_.translation_.x,worldTransform_.translation_.y, worldTransform_.translation_.z };
@@ -113,21 +114,25 @@ void Player::Attack() {
 		Vector3 velocity(0, 0, kBulletSpeed);
 		velocity = TransformNomal(velocity, worldTransform_.matWorld_);
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 		bullet_ = newBullet;
 		bullets_.push_back(newBullet);
 	}
 }
 
-void Player::OnCollision(){
+void Player::OnCollision() {
 	//何もしない
+}
+
+void Player::SetParent(const WorldTransform* parent) {
+	worldTransform_.parent_ = parent;
 }
 
 Vector3 Player::GetWorldPosition() {
 	Vector3 worldPos;
-	worldPos.x = worldTransform_.translation_.x;
-	worldPos.y = worldTransform_.translation_.y;
-	worldPos.z = worldTransform_.translation_.z;
+	worldPos.x = worldTransform_.matWorld_.m[3][0];
+	worldPos.y = worldTransform_.matWorld_.m[3][1];
+	worldPos.z = worldTransform_.matWorld_.m[3][2];
 
 	return worldPos;
 }
