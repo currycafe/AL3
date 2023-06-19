@@ -9,7 +9,7 @@
 
 
 class Player;
-
+class GameScene;
 class Enemy
 {
 public:
@@ -19,7 +19,7 @@ public:
 	};
 
 
-	~Enemy();
+	
 	void Initialize(Model* model, const Vector3& position);
 	void Update();
 	void Draw(ViewProjection& viewProjection);
@@ -30,8 +30,11 @@ public:
 	void SetPlayer(Player* player) { player_ = player; }
 	void OnCollision();
 	Vector3 GetWorldPosition();
-	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
+	/*const std::list<EnemyBullet*>& GetBullets() { return bullets_; }*/
 	float GetRadius() { return radius_; }
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+	bool IsDead() { return isDead_; };
+
 
 private:
 	WorldTransform worldTransform_;
@@ -39,8 +42,9 @@ private:
 	uint32_t textureHundle_ = 0u;
 	Input* input_ = nullptr;
 	EnemyBullet* bullet_ = nullptr;
+	GameScene* gameScene_ = nullptr;
 
-	std::list<EnemyBullet*>bullets_;
+	/*std::list<EnemyBullet*>bullets_;*/
 
 	Enemy::Phase phase_ = Enemy::Phase::Approach;
 	int32_t fireTimer = 0;
@@ -50,5 +54,11 @@ private:
 	Player* player_ = nullptr;
 
 	float radius_ = 1.0f;
+
+	static const int32_t kLifeTime = 60 * 5;
+	int32_t deathTimer_ = kLifeTime;
+	bool isDead_ = false;
+
+
 };
 

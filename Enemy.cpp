@@ -5,16 +5,18 @@
 #include "MathUtility.h"
 #include "Player.h"
 #include <cmath>
+#include "GameScene.h"
 
-Enemy::~Enemy()
-{
-	/*for (EnemyBullet* bullet : bullets_) {
-		delete bullet;
-	}*/
-	if (bullet_) {
-		delete bullet_;
-	}
-}
+
+//Enemy::~Enemy()
+//{
+//	/*for (EnemyBullet* bullet : bullets_) {
+//		delete bullet;
+//	}*/
+//	if (bullet_) {
+//		delete bullet_;
+//	}
+//}
 
 
 
@@ -30,16 +32,15 @@ void Enemy::Initialize(Model* model, const Vector3& position)
 }
 
 
-
 void Enemy::Update()
 {
-	bullets_.remove_if([](EnemyBullet* bullet) {
+	/*bullets_.remove_if([](EnemyBullet* bullet) {
 		if (bullet->IsDead()) {
 			delete bullet;
 			return true;
 		}
 		return false;
-		});
+		});*/
 	worldTransform_.UpdateMatrix();
 	//worldTransform_.translation_.z -= 0.2f;
 
@@ -62,6 +63,10 @@ void Enemy::Update()
 		worldTransform_.translation_.y -= 0.2f;
 		break;
 	}
+
+	if (--deathTimer_ <= 0) {
+		isDead_ = true;
+	}
 	//Fire();
 	/*if (bullet_) {
 		bullet_->Draw(viewProjection);*/
@@ -72,21 +77,18 @@ void Enemy::Update()
 	/*if (bullet_) {
 		bullet_->Update();
 	}*/
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Update();
-	}
+
 }
 
 void Enemy::Draw(ViewProjection& viewProjection)
 {
 	model_->Draw(worldTransform_, viewProjection, textureHundle_);
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(viewProjection);
-	}
+
 	/*if (bullet_) {
 		bullet_->Draw(viewProjection);
 	}*/
 }
+
 
 void Enemy::Fire()
 {
@@ -116,23 +118,24 @@ void Enemy::Fire()
 	float length = sqrtf(c.x * c.x + c.y * c.y + c.z * c.z);
 	Vector3 dir = { c.x / length, c.y / length, c.z / length };
 
-	Vector3 velocity(kBulletSpeed* dir.x, kBulletSpeed*dir.y, kBulletSpeed* dir.z);
+	Vector3 velocity(kBulletSpeed * dir.x, kBulletSpeed * dir.y, kBulletSpeed * dir.z);
 	//velocity = TransformNomal(velocity, worldTransform_.matWorld_);
 
 
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 	//bullet_ = newBullet;
-	bullets_.push_back(newBullet);
-
+	//bullets_.push_back(newBullet);
+	gameScene_->AddEnemyBullet(newBullet);
 }
 
 void Enemy::ApproachFire() {
 	fireTimer = kFireinterval;
 }
 
-void Enemy::OnCollision(){
+void Enemy::OnCollision() {
 	//何もしない
+	//isDead_ = true;
 }
 
 Vector3 Enemy::GetWorldPosition() {
