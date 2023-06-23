@@ -5,6 +5,9 @@
 #include"MathUtility.h"
 
 
+
+
+
 Player::~Player()
 {
 	for (PlayerBullet* bullet : bullets_) {
@@ -13,21 +16,25 @@ Player::~Player()
 	/*if (bullet_) {
 		delete bullet_;
 	}*/
-
+	delete sprite2DReticle_;
 
 }
 
 
-void Player::Initialize(Model* model, uint32_t textureHundle, const Vector3& position){
+void Player::Initialize(Model* model, uint32_t textureHundle, const Vector3& position) {
 	assert(model);
 	model_ = model;
 	worldTransform_.Initialize();
 	textureHundle_ = textureHundle;
 	input_ = Input::GetInstance();
 	worldTransform_.translation_ = position;
+	worldTransform3DReticle_.Initialize();
+
+	uint32_t textureReticle = TextureManager::Load("target.png");
+	sprite2DReticle_ = Sprite::Create(textureReticle, { 640,360 }, { 1,1,1,1 }, { 0.5f,0.5f });
 }
 
-void Player::Updete()
+void Player::Updete(ViewProjection& viewProjection)
 {
 	bullets_.remove_if([](PlayerBullet* bullet) {
 		if (bullet->IsDead()) {
@@ -94,6 +101,24 @@ void Player::Updete()
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Update();
 	}
+	const float kDistancePlayerTo3DReticle = 10.0f;
+	Vector3 offset = { 0.0f,0.0f,1.0f };
+	offset = TransformNomal(offset, worldTransform_.matWorld_);
+	offset = Normalize(offset) * kDistancePlayerTo3DReticle;
+	worldTransform3DReticle_.translation_ = GetWorldPosition() + offset;
+	worldTransform3DReticle_.UpdateMatrix();
+
+	Vector3 positionReticle = { 
+		worldTransform3DReticle_.matWorld_.m[3][0],
+		worldTransform3DReticle_.matWorld_.m[3][1],
+		worldTransform3DReticle_.matWorld_.m[3][2] 
+	};
+
+	Matrix4x4 matViewport=MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+	Matrix4x4 matViewProjectionViewport = viewProjection.matView * viewProjection.matProjection * matViewport;
+	positionReticle = Transform(positionReticle, matViewProjectionViewport);
+	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+
 
 }
 
@@ -105,6 +130,7 @@ void Player::Draw(ViewProjection& viewProjection) {
 	for (PlayerBullet* bullet : bullets_) {
 		bullet->Draw(viewProjection);
 	}
+	model_->Draw(worldTransform3DReticle_, viewProjection);
 }
 
 
@@ -117,6 +143,8 @@ void Player::Attack() {
 		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 		bullet_ = newBullet;
 		bullets_.push_back(newBullet);
+		velocity = GetWorldTransform3DReticle() - GetWorldPosition();
+		velocity = Normalize(velocity) * kBulletSpeed;
 	}
 }
 
@@ -126,6 +154,19 @@ void Player::OnCollision() {
 
 void Player::SetParent(const WorldTransform* parent) {
 	worldTransform_.parent_ = parent;
+}
+
+Vector3 Player::GetWorldTransform3DReticle() {
+	Vector3 worldPos;
+	worldPos.x = worldTransform3DReticle_.matWorld_.m[3][0];
+	worldPos.y = worldTransform3DReticle_.matWorld_.m[3][1];
+	worldPos.z = worldTransform3DReticle_.matWorld_.m[3][2];
+
+	return worldPos;
+}
+
+void Player::DrawUI() {
+	sprite2DReticle_->Draw();
 }
 
 Vector3 Player::GetWorldPosition() {

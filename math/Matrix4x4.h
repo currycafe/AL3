@@ -6,6 +6,9 @@
 struct Matrix4x4 final {
 	float m[4][4];
 };
+Vector3 Transform(Vector3 offset, Matrix4x4 matrix);
+Vector3 Normalize(Vector3 offset);
+
 
 Matrix4x4 MakeScaleMatrix(const Vector3& scale);
 Matrix4x4 MakeRotateXMatrix(float theta);
@@ -14,11 +17,17 @@ Matrix4x4 MakeRotateZMatrix(float theta);
 Matrix4x4 MakeTranslateMatrix(Vector3 translate);
 
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vector3& translate);
-Matrix4x4 Inverse(Matrix4x4 matrix); 
-
+Matrix4x4 Inverse(Matrix4x4 matrix);
+Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth);
 
 //代入演算子オーバーロード
 Matrix4x4& operator*=(Matrix4x4& m1, const Matrix4x4& m2);
 
 //2公演算子オーバーロード
 Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
+
+Vector3& operator*=(Vector3& v, const float& f);
+Vector3 operator*(const Vector3& v, const float& f);
+//Vector3& operator-=(Vector3& v1, const Vector3& v2);
+//Vector3 operator-(const Vector3& v1, const Vector3& v2);
+//

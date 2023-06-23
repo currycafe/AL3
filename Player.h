@@ -6,6 +6,7 @@
 #include"PlayerBullet.h"
 #include<list>
 #include"Enemy.h"
+#include"Sprite.h"
 
 
 
@@ -14,7 +15,7 @@ class Player
 public:
 	~Player();
 	void Initialize(Model* model, uint32_t textureHundle, const Vector3& position);
-	void Updete();
+	void Updete(ViewProjection& viewProjection);
 	void Draw(ViewProjection& viewProjection);
 	void Attack();
 	//ワールド座標を取得
@@ -23,6 +24,8 @@ public:
 	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
 	float GetRadius() { return radius_; }
 	void SetParent(const WorldTransform* parent);
+	Vector3 GetWorldTransform3DReticle();
+	void DrawUI();
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
@@ -33,7 +36,9 @@ private:
 
 	std::list<PlayerBullet*>bullets_;
 	float radius_ = 1.0f;
-
+	WorldTransform worldTransform3DReticle_;
+	Sprite* sprite2DReticle_ = nullptr;
+	
 
 };
 

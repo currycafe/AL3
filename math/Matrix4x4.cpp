@@ -1,6 +1,26 @@
 #include "Matrix4x4.h"
 #include <cmath>
 
+
+
+Vector3 Transform(Vector3 offset, Matrix4x4 matrix) {
+	Vector3 result;
+	result.x = offset.x * matrix.m[0][0] + offset.y * matrix.m[1][0] + offset.z * matrix.m[2][0] + 1.0f * matrix.m[3][0];
+	result.y = offset.x * matrix.m[0][1] + offset.y * matrix.m[1][1] + offset.z * matrix.m[2][1] + 1.0f * matrix.m[3][1];
+	result.z = offset.x * matrix.m[0][2] + offset.y * matrix.m[1][2] + offset.z * matrix.m[2][2] + 1.0f * matrix.m[3][2];
+	float w = offset.x * matrix.m[0][3] + offset.y * matrix.m[1][3] + offset.z * matrix.m[2][3] + 1.0f * matrix.m[3][3];
+	result.x /= w;
+	result.y /= w;
+	result.z /= w;
+	return result;
+}
+Vector3 Normalize(Vector3 offset) {
+	Vector3 result;
+	result.x = offset.x / sqrtf(offset.x * offset.x + offset.y * offset.y + offset.z * offset.z);
+	result.y = offset.y / sqrtf(offset.x * offset.x + offset.y * offset.y + offset.z * offset.z);
+	result.z = offset.z / sqrtf(offset.x * offset.x + offset.y * offset.y + offset.z * offset.z);
+	return result;
+}
 Matrix4x4 MakeScaleMatrix(const Vector3& scale)
 {
 	Matrix4x4 result;
@@ -212,7 +232,26 @@ Matrix4x4 Inverse(Matrix4x4 matrix) {
 		matrix.m[0][0] * matrix.m[1][2] * matrix.m[2][1]) * determinantRecp;
 	return result;
 }
-
+Matrix4x4 MakeViewportMatrix(float left, float top, float width, float height, float minDepth, float maxDepth) {
+	Matrix4x4 result;
+	result.m[0][0] = width / 2.0f;
+	result.m[0][1] = 0.0f;
+	result.m[0][2] = 0.0f;
+	result.m[0][3] = 0.0f;
+	result.m[1][0] = 0.0f;
+	result.m[1][1] = -(height / 2.0f);
+	result.m[1][2] = 0.0f;
+	result.m[1][3] = 0.0f;
+	result.m[2][0] = 0.0f;
+	result.m[2][1] = 0.0f;
+	result.m[2][2] = maxDepth - minDepth;
+	result.m[2][3] = 0.0f;
+	result.m[3][0] = left + width / 2;
+	result.m[3][1] = top + height / 2;
+	result.m[3][2] = minDepth;
+	result.m[3][3] = 1.0f;
+	return result;
+}
 
 Matrix4x4& operator*=(Matrix4x4& m1, const Matrix4x4& m2) {
 	Matrix4x4 result = {};
@@ -227,12 +266,41 @@ Matrix4x4& operator*=(Matrix4x4& m1, const Matrix4x4& m2) {
 	m1 = result;
 	return m1;
 }
-
 Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2) {
 	Matrix4x4 result = m1;
 
 	return result *= m2;
 }
+Vector3& operator*=(Vector3& v, const float& f) {
+	Vector3 result{};
+
+	result.x = f * v.x;
+	result.y = f * v.y;
+	result.z = f * v.z;
+
+	v = result;
+	return v;
+
+}
+Vector3 operator*(const Vector3& v, const float& f) {
+	Vector3 result = v;
+
+	return result *= f;
+
+}
+//Vector3& operator-=(Vector3& v1, const Vector3& v2) {
+//	v1.x -= v2.x;
+//	v1.y -= v2.y;
+//	v1.z -= v2.z;
+//
+//	return v1;
+//}
+//Vector3 operator-(const Vector3& v1, const Vector3& v2) {
+//	Vector3 result = v1;
+//
+//	return result -= v2;
+//}
+
 
 
 

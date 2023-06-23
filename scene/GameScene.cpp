@@ -38,7 +38,7 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	player_->Initialize(model_, textureHandle_, { 0.0f,-5.0f,20.0f });
 
-
+	//TextureManager::Load("target.png");
 	AddEnemy({ 0.0f,3.0f,10.0f });
 
 
@@ -61,7 +61,7 @@ void GameScene::Initialize() {
 }
 
 void GameScene::Update() {
-	player_->Updete();
+	player_->Updete(viewProjection_);
 
 	skydome_->Update();
 	railCamera_->Update();
@@ -131,6 +131,7 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon_->ClearDepthBuffer();
+	
 #pragma endregion
 
 #pragma region 3Dオブジェクト描画
@@ -160,8 +161,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-
-
+	player_->DrawUI();
+	
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
