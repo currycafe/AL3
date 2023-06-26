@@ -108,16 +108,37 @@ void Player::Updete(ViewProjection& viewProjection)
 	worldTransform3DReticle_.translation_ = GetWorldPosition() + offset;
 	worldTransform3DReticle_.UpdateMatrix();
 
-	Vector3 positionReticle = { 
+	Vector3 positionReticle = {
 		worldTransform3DReticle_.matWorld_.m[3][0],
 		worldTransform3DReticle_.matWorld_.m[3][1],
-		worldTransform3DReticle_.matWorld_.m[3][2] 
+		worldTransform3DReticle_.matWorld_.m[3][2]
 	};
 
-	Matrix4x4 matViewport=MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+	Matrix4x4 matViewport = MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
 	Matrix4x4 matViewProjectionViewport = viewProjection.matView * viewProjection.matProjection * matViewport;
 	positionReticle = Transform(positionReticle, matViewProjectionViewport);
 	sprite2DReticle_->SetPosition(Vector2(positionReticle.x, positionReticle.y));
+
+
+	POINT mousePosition;
+	//マウス座標(スクリーン座標)を取得する
+	GetCursorPos(&mousePosition);
+
+	//クライアントエリア座標に変換する
+	HWND hwnd = WinApp::GetInstance()->GetHwnd();
+	ScreenToClient(hwnd, &mousePosition);
+	sprite2DReticle_=Get
+
+	//ビュープロジェクションビューポート合成行列
+	Matrix4x4 matVPV = viewProjection.matView * viewProjection.matProjection * matViewport;
+	//合成行列の逆行列を計算する
+	Matrix4x4 matInverseVPV = Inverse(matVPV);
+
+	//スクリーン座標系からワールド座標系へ
+	Vector3 posNear=Vector3()
+
+
+
 
 
 }
