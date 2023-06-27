@@ -81,11 +81,11 @@ void GameScene::Update() {
 		return false;
 		});
 
-	for (EnemyBullet* bullet : enemyBullets_) {
-		bullet->Update();
-	}
 	for (Enemy* enemy : enemies_) {
 		enemy->Update();
+	}
+	for (EnemyBullet* bullet : enemyBullets_) {
+		bullet->Update();
 	}
 
 	UpdateEnemyPopCommands();
@@ -287,7 +287,7 @@ void GameScene::UpdateEnemyPopCommands() {
 
 			AddEnemy(Vector3(x, y, z));
 		}
-		else if (word.find("WATIT") == 0) {
+		else if (word.find("WAIT") == 0) {
 			getline(line_stream, word, ',');
 
 			int32_t waitTime = atoi(word.c_str());
