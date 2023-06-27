@@ -9,7 +9,7 @@ public:
 	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
 	void Update();
 	void Draw(ViewProjection& viewProjection);
-	bool IsDead()const { return isDead_; }
+	bool IsDead() { return isDead_; }
 	void OnCollision();
 	Vector3 GetWorldPosition();
 	float GetRadius() { return radius_; }

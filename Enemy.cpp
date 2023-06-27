@@ -29,6 +29,7 @@ void Enemy::Initialize(Model* model, const Vector3& position)
 	worldTransform_.translation_ = position;
 	//Fire();
 	ApproachFire();
+
 }
 
 
@@ -67,17 +68,7 @@ void Enemy::Update()
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
-	//Fire();
-	/*if (bullet_) {
-		bullet_->Draw(viewProjection);*/
-		/*for (EnemyBullet* bullet : bullets_) {
-			bullet->Update();
-		}*/
-		//Fire();
-	/*if (bullet_) {
-		bullet_->Update();
-	}*/
-
+	
 }
 
 void Enemy::Draw(ViewProjection& viewProjection)
@@ -90,18 +81,7 @@ void Enemy::Draw(ViewProjection& viewProjection)
 }
 
 
-void Enemy::Fire()
-{
-	//if (input_->TriggerKey(DIK_Q)) {
-	//	const float kBulletSpeed = -4.0f;
-	//	Vector3 velocity(0, 0, kBulletSpeed);
-	//	velocity = TransformNomal(velocity, worldTransform_.matWorld_);
-	//	EnemyBullet* newBullet = new EnemyBullet();
-	//	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
-	//	bullet_ = newBullet;
-	//	//bullets_.push_back(newBullet);
-	//}
-
+void Enemy::Fire() {
 	const float kBulletSpeed = 1.0f;
 	Vector3 a = GetWorldPosition();
 	Vector3 b = player_->GetWorldPosition();
@@ -110,22 +90,16 @@ void Enemy::Fire()
 	c.y = b.y - a.y;
 	c.z = b.z - a.z;
 
-	//c.x /= 100.0f;
-	//c.y /= 100.0f;
-	//c.z /= 100.0f;
-
-
 	float length = sqrtf(c.x * c.x + c.y * c.y + c.z * c.z);
 	Vector3 dir = { c.x / length, c.y / length, c.z / length };
 
 	Vector3 velocity(kBulletSpeed * dir.x, kBulletSpeed * dir.y, kBulletSpeed * dir.z);
 	//velocity = TransformNomal(velocity, worldTransform_.matWorld_);
 
-
-	EnemyBullet* newBullet = new EnemyBullet();
-	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 	//bullet_ = newBullet;
 	//bullets_.push_back(newBullet);
+	EnemyBullet* newBullet = new EnemyBullet();
+	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 	gameScene_->AddEnemyBullet(newBullet);
 }
 

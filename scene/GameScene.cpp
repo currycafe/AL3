@@ -81,14 +81,14 @@ void GameScene::Update() {
 		return false;
 		});
 
-	for (EnemyBullet* bullet : enemyBullets_) {
-		bullet->Update();
-	}
 	for (Enemy* enemy : enemies_) {
 		enemy->Update();
 	}
-
+	for (EnemyBullet* bullet : enemyBullets_) {
+		bullet->Update();
+	}
 	UpdateEnemyPopCommands();
+
 	
 #ifdef  _DEBUG
 	if (input_->TriggerKey(DIK_1)) {
@@ -257,7 +257,7 @@ void GameScene::UpdateEnemyPopCommands() {
 	if (waitFlag_ == true) {
 		waitTimer_--;
 		if (waitTimer_ <= 0) {
-			waitFlag_ = true;
+			waitFlag_ = false;
 		}
 		return;
 	}
@@ -286,12 +286,12 @@ void GameScene::UpdateEnemyPopCommands() {
 
 			AddEnemy(Vector3(x, y, z));
 		}
-		else if (word.find("WATIT") == 0) {
+		else if (word.find("WAIT") == 0) {
 			getline(line_stream, word, ',');
 
 			int32_t waitTime = atoi(word.c_str());
 
-			//待機開始
+		//待機開始
 			waitFlag_ = true;
 			waitTimer_ = waitTime;
 			//コマンドループを抜けます
