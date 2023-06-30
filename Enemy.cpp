@@ -135,7 +135,7 @@ void Enemy::ApproachFire() {
 
 void Enemy::OnCollision() {
 	//何もしない
-	//isDead_ = true;
+	isDead_ = true;
 }
 
 Vector3 Enemy::GetWorldPosition() {
