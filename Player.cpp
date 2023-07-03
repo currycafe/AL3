@@ -127,17 +127,34 @@ void Player::Updete(ViewProjection& viewProjection)
 	//クライアントエリア座標に変換する
 	HWND hwnd = WinApp::GetInstance()->GetHwnd();
 	ScreenToClient(hwnd, &mousePosition);
-	sprite2DReticle_=Get
+	sprite2DReticle_->SetPosition({ float(mousePosition.x),float(mousePosition.y) });
+
+
+
+
 
 	//ビュープロジェクションビューポート合成行列
 	Matrix4x4 matVPV = viewProjection.matView * viewProjection.matProjection * matViewport;
 	//合成行列の逆行列を計算する
 	Matrix4x4 matInverseVPV = Inverse(matVPV);
 
+	//スクリーン座標
+	Vector3 posNear = Vector3(float(mousePosition.x), float(mousePosition.y), 0);
+	Vector3 posFar = Vector3(float(mousePosition.x), float(mousePosition.y), 1);
+
 	//スクリーン座標系からワールド座標系へ
-	Vector3 posNear=Vector3()
+	posNear = Transform(posNear, matInverseVPV);
+	posFar = Transform(posFar, matInverseVPV);
+
+	//マウスレイの方向
+	Vector3 mouseDirection = posFar - posNear;
+	mouseDirection = Normalize(mouseDirection);
 
 
+	//カメラから標準オブジェクトの距離
+	const float kDistanceTestObject = 50.0f;
+	worldTransform3DReticle_.translation_ = posNear + mouseDirection * kDistanceTestObject;
+	worldTransform3DReticle_.UpdateMatrix();
 
 
 
@@ -161,11 +178,11 @@ void Player::Attack() {
 		Vector3 velocity(0, 0, kBulletSpeed);
 		velocity = TransformNomal(velocity, worldTransform_.matWorld_);
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 		bullet_ = newBullet;
-		bullets_.push_back(newBullet);
 		velocity = GetWorldTransform3DReticle() - GetWorldPosition();
 		velocity = Normalize(velocity) * kBulletSpeed;
+		newBullet->Initialize(model_, GetWorldPosition(), velocity);
+		bullets_.push_back(newBullet);
 	}
 }
 
