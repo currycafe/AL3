@@ -23,6 +23,7 @@ void Player::Initialize(Model* model, uint32_t textureHundle)
 	assert(model);
 	model_ = model;
 	worldTransform_.Initialize();
+	worldTransform_.translation_.y = -1.0f;
 	textureHundle_ = textureHundle;
 	input_ = Input::GetInstance();
 }
