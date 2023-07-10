@@ -3,6 +3,10 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "MathUtility.h"
+//#include "Player.h"
+
+class Player;
 class EnemyBullet
 {
 public:
@@ -10,8 +14,8 @@ public:
 	void Update();
 	void Draw(ViewProjection& viewProjection);
 	bool IsDead()const { return isDead_; }
-
-
+	void SetPlayer(Player* player) { player_ = player; }
+	Vector3 GetWorldPosition();
 
 
 
@@ -25,6 +29,6 @@ private:
 	int32_t deathTimer_ = kLifeTime;
 	bool isDead_ = false;
 	float velocityXZ;
-
+	Player* player_ = nullptr;
 };
 

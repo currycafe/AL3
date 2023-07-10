@@ -45,7 +45,6 @@ private:
 	int32_t fireTimer = 0;
 
 	//自キャラ
-	//Enemy* enemy_ = nullptr;
 	Player* player_ = nullptr;
 };
 
