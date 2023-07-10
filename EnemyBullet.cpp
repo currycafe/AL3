@@ -35,9 +35,11 @@ void EnemyBullet::Update() {
 	Vector3 toPlayer = player_->GetWorldPosition() - GetWorldPosition();
 	Normalize(toPlayer);
 	Normalize(velocity_);
-	velocity_ = Lerp(velocity_, toPlayer, 0.01f);
+	velocity_ = Lerp(velocity_, toPlayer, 0.004f);
 	velocity_ *= 1.0f;
-
+	worldTransform_.rotation_.y = std::atan2(velocity_.x, velocity_.z);
+	velocityXZ = sqrtf(velocity_.x * velocity_.x + velocity_.z * velocity_.z);
+	worldTransform_.rotation_.x = std::atan2(-velocity_.y, velocityXZ);
 
 }
 
