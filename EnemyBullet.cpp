@@ -32,6 +32,7 @@ void EnemyBullet::Update() {
 		isDead_ = true;
 	}
 
+
 	Vector3 toPlayer = player_->GetWorldPosition() - GetWorldPosition();
 	Normalize(toPlayer);
 	Normalize(velocity_);
