@@ -28,7 +28,7 @@ void GameScene::Initialize() {
 	player_->Initialize(model_, textureHandle_);
 
 	enemy_ = new Enemy();
-	enemy_->Initialize(model_, {0.0f,0.0f,200.0f});
+	enemy_->Initialize(model_, { 0.0f,0.0f,50.0f });
 
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
@@ -40,7 +40,7 @@ void GameScene::Initialize() {
 
 void GameScene::Update() {
 	player_->Updete();
-	enemy_->Updete();
+	enemy_->Update();
 
 
 #ifdef  _DEBUG
