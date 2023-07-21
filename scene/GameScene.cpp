@@ -117,7 +117,6 @@ void GameScene::Draw() {
 }
 
 void GameScene::CheckAllCollisions() {
-
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
 
