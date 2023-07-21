@@ -6,10 +6,12 @@
 #include"PlayerBullet.h"
 #include<list>
 #include"Enemy.h"
+#include "Collider.h"
 
 
 
-class Player
+
+class Player :public Collider
 {
 public:
 	~Player();
@@ -18,10 +20,11 @@ public:
 	void Draw(ViewProjection& viewProjection);
 	void Attack();
 	//ワールド座標を取得
-	Vector3 GetWorldPosition();
-	void OnCollision();
+	Vector3 GetWorldPosition()override;
+	void OnCollision()override;
 	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
 	float GetRadius() { return radius_; }
+	/*void Oncollisions() override;*/
 
 private:
 	WorldTransform worldTransform_;

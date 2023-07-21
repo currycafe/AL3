@@ -3,17 +3,17 @@
 #include"Vector3.h"
 #include"ViewProjection.h"
 #include"WorldTransform.h"
-
-class PlayerBullet {
+#include "Collider.h"
+class PlayerBullet :public Collider {
 public:
-	
+
 	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
 	void Update();
 	void Draw(ViewProjection& viewProjection);
 	bool IsDead()const { return isDead_; }
-	void OnCollision();
+	void OnCollision()override;
 	float GetRadius() { return radius_; }
-	Vector3 GetWorldPosition();
+	Vector3 GetWorldPosition()override;
 
 private:
 

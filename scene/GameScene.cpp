@@ -117,72 +117,45 @@ void GameScene::Draw() {
 }
 
 void GameScene::CheckAllCollisions() {
-	Vector3 posA;
-	Vector3 posB;
 
 	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
 
 #pragma region
-	posA = player_->GetWorldPosition();
+
 	for (EnemyBullet* bullets : enemyBullets) {
-		posB = bullets->GetWorldPosition();
-
-		float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-			(posB.y - posA.y) * (posB.y - posA.y) +
-			(posB.z - posA.z) * (posB.z - posA.z);
-
-		if (distance <= player_->GetRadius() + bullets->GetRadius()) {
-			player_->OnCollision();
-			bullets->OnCollision();
-		}
+		CheckCollisionPair(player_, bullets);
 	}
 
 #pragma endregion
 
-
 #pragma region
-	posA = enemy_->GetWorldPosition();
+
 	for (PlayerBullet* bullets : playerBullets) {
-		posB = bullets->GetWorldPosition();
-
-		float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-			(posB.y - posA.y) * (posB.y - posA.y) +
-			(posB.z - posA.z) * (posB.z - posA.z);
-
-		if (distance <= player_->GetRadius() + bullets->GetRadius()) {
-			enemy_->OnCollision();
-			bullets->OnCollision();
-		}
+		CheckCollisionPair(enemy_, bullets);
 	}
 #pragma endregion
 
 #pragma region
 	for (PlayerBullet* playerbullets : playerBullets) {
 		for (EnemyBullet* enemybullets : enemyBullets) {
-			posA = playerbullets->GetWorldPosition();
-			posB = enemybullets->GetWorldPosition();
-			float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-				(posB.y - posA.y) * (posB.y - posA.y) +
-				(posB.z - posA.z) * (posB.z - posA.z);
-
-			if (distance <= playerbullets->GetRadius() + enemybullets->GetRadius()) {
-				playerbullets->OnCollision();
-				enemybullets->OnCollision();
-			}
+			CheckCollisionPair(playerbullets, enemybullets);
 		}
 	}
-
-
-
-
-
-
-
 #pragma endregion
+}
 
-
-
-
-
+void GameScene::CheckCollisionPair(Collider* colliderA, Collider* colliderB)
+{
+	Vector3 posA;
+	Vector3 posB;
+	posA = colliderA->GetWorldPosition();
+	posB = colliderB->GetWorldPosition();
+	float distance = (posB.x - posA.x) * (posB.x - posA.x) +
+		(posB.y - posA.y) * (posB.y - posA.y) +
+		(posB.z - posA.z) * (posB.z - posA.z);
+	if (distance <= colliderA->GetRadius() + colliderB->GetRadius()) {
+		colliderA->OnCollision();
+		colliderB->OnCollision();
+	}
 }

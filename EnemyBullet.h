@@ -3,15 +3,16 @@
 #include "Vector3.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-class EnemyBullet
+#include "Collider.h"
+class EnemyBullet:public Collider
 {
 public:
 	void Initialize(Model* model, const Vector3& position, const Vector3& velocity);
 	void Update();
 	void Draw(ViewProjection& viewProjection);
 	bool IsDead()const { return isDead_; }
-	void OnCollision();
-	Vector3 GetWorldPosition();
+	void OnCollision()override;
+	Vector3 GetWorldPosition()override;
 	float GetRadius() { return radius_; }
 
 

@@ -119,7 +119,7 @@ void Player::Attack() {
 	}
 }
 
-void Player::OnCollision(){
+void Player::OnCollision() {
 	//何もしない
 }
 
