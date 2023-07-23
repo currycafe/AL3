@@ -11,10 +11,6 @@ public:
 	void Draw(ViewProjection& viewProjection);
 	bool IsDead()const { return isDead_; }
 
-
-
-
-
 private:
 
 	WorldTransform worldTransform_;

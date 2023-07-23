@@ -6,9 +6,6 @@
 #include "EnemyBullet.h"
 #include <list>
 
-
-
-
 class Enemy
 {
 public:
