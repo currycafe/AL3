@@ -10,17 +10,40 @@
 class Player
 {
 public:
-	void Initialize(Model*model,uint32_t textureHundle);
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="model">モデル</param>
+	/// <param name="textureHundle">テクスチャハンドル</param>
+	void Initialize(Model* model, uint32_t textureHundle);
+	/// <summary>
+	/// 更新
+	/// </summary>
 	void Updete();
-	void Draw(ViewProjection&viewProjection);
+	/// <summary>
+	/// 描画
+	/// </summary>
+	/// <param name="viewProjection">ビュープロジェクション(参照渡し)</param>
+	void Draw(ViewProjection& viewProjection);
+	/// <summary>
+	/// 旋回
+	/// </summary>
+	void Rotate();
+	/// <summary>
+	/// 攻撃
+	/// </summary>
 	void Attack();
-	//void Rotate();
+	
 private:
+	//ワールド変換データ
 	WorldTransform worldTransform_;
+	//モデル
 	Model* model_ = nullptr;
+	//テクスチャハンドル
 	uint32_t textureHundle_ = 0u;
-
+	//キーボード入力
 	Input* input_ = nullptr;
+	//主人公の弾
 	PlayerBullet* bullet_ = nullptr;
 };
 
