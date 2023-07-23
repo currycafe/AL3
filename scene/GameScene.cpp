@@ -5,6 +5,7 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
+	//データの解放
 	delete model_;
 	delete player_;
 }
@@ -15,27 +16,26 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+	//ファイル名を指定してテクスチャを読み込み
 	textureHandle_ = TextureManager::Load("sample.png");
+	//3Dモデルデータの生成
 	model_ = Model::Create();
-	worldTransform_.Initialize();
+	//ビュープロジェクションの初期化
 	viewProjection_.Initialize();
-
+	//ワールドトランスフォームの初期化
+	worldTransform_.Initialize();
+	//自キャラの生成
 	player_ = new Player();
+	//自キャラの初期化
 	player_->Initialize(model_,textureHandle_);
-	
-
-
 }
 
 void GameScene::Update() {
+	//自キャラの描画
 	player_->Updete();
-
-
-
 }
 
 void GameScene::Draw() {
-
 	// コマンドリストの取得
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
 
