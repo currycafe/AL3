@@ -4,8 +4,6 @@
 #include "WorldTransform.h"
 #include "Input.h"
 
-
-
 class Player
 {
 public:
