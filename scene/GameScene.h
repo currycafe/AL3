@@ -19,7 +19,7 @@ public: // メンバ関数
 	/// コンストクラタ
 	/// </summary>
 	GameScene();
-	
+
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -51,15 +51,17 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	
+
+	//3Dモデルデータ
 	Model* model_ = nullptr;
-	WorldTransform worldTransform_;
+	//ビュープロジェクション
 	ViewProjection viewProjection_;
-
+	//ワールドトランスフォーム
+	WorldTransform worldTransform_;
+	//自キャラのメンバ変数
 	Player* player_ = nullptr;
-
+	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
+	//デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
-	//float imputFloat3[3] = { 0,0,0 };
-	
 };

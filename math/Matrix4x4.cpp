@@ -1,8 +1,7 @@
 #include "Matrix4x4.h"
 #include <cmath>
 
-Matrix4x4 MakeScaleMatrix(const Vector3& scale)
-{
+Matrix4x4 MakeScaleMatrix(const Vector3& scale){
 	Matrix4x4 result;
 	result = {
 		scale.x,0.0f,0.0f,0.0f,
@@ -84,7 +83,6 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rot, const Vecto
 	return result;
 }
 
-
 Matrix4x4& operator*=(Matrix4x4& m1, const Matrix4x4& m2) {
 	Matrix4x4 result = {};
 	for (size_t i = 0;i < 4;i++) {
@@ -104,18 +102,3 @@ Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2) {
 
 	return result *= m2;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
