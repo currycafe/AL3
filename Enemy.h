@@ -3,9 +3,6 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
-
-
-
 class Enemy
 {
 public:
