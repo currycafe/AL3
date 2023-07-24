@@ -8,8 +8,9 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Player.h"
-#include"DebugCamera.h"
-#include"Enemy.h"
+#include "DebugCamera.h"
+#include "Enemy.h"
+#include "Collider.h"
 /// <summary>
 /// ゲームシーン
 /// </summary>
@@ -20,7 +21,7 @@ public: // メンバ関数
 	/// コンストクラタ
 	/// </summary>
 	GameScene();
-	
+
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -57,7 +58,7 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	
+
 	Model* model_ = nullptr;
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
@@ -69,5 +70,10 @@ private: // メンバ変数
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
 	//float imputFloat3[3] = { 0,0,0 };
-	
+	/// <summary>
+	/// コライダー2つの衝突判定と応答
+	/// </summary>
+	/// <param name="colliderA"></param>
+	/// <param name="colliderB"></param>
+	void CheckCollisionPair(Collider* colliderA, Collider* colliderB);
 };

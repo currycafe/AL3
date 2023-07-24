@@ -6,11 +6,11 @@
 #include "EnemyBullet.h"
 #include <list>
 #include "Player.h"
-
+#include "Collider.h"
 
 class Player;
 
-class Enemy
+class Enemy :public Collider
 {
 public:
 	enum class Phase {
@@ -28,8 +28,8 @@ public:
 	void ApproachFire();
 
 	void SetPlayer(Player* player) { player_ = player; }
-	void OnCollision();
-	Vector3 GetWorldPosition();
+	void OnCollision()override;
+	Vector3 GetWorldPosition()override;
 	const std::list<EnemyBullet*>& GetBullets() { return bullets_; }
 	float GetRadius() { return radius_; }
 
@@ -51,4 +51,3 @@ private:
 
 	float radius_ = 1.0f;
 };
-

@@ -10,6 +10,8 @@ void EnemyBullet::Initialize(Model* model, const Vector3& position, const Vector
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	velocity_ = velocity;
+	SetCollisionAttribute(kCollisionAttributeEnemy);
+	SetCollisionMask(kCollisionAttributePlayer);
 }
 
 void EnemyBullet::Update() {
@@ -41,4 +43,3 @@ Vector3 EnemyBullet::GetWorldPosition()
 
 	return worldPos;
 }
-

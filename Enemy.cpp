@@ -27,6 +27,8 @@ void Enemy::Initialize(Model* model, const Vector3& position)
 	worldTransform_.translation_ = position;
 	//Fire();
 	ApproachFire();
+	SetCollisionAttribute(kCollisionAttributeEnemy);
+	SetCollisionMask(kCollisionAttributePlayer);
 }
 
 
@@ -116,7 +118,7 @@ void Enemy::Fire()
 	float length = sqrtf(c.x * c.x + c.y * c.y + c.z * c.z);
 	Vector3 dir = { c.x / length, c.y / length, c.z / length };
 
-	Vector3 velocity(kBulletSpeed* dir.x, kBulletSpeed*dir.y, kBulletSpeed* dir.z);
+	Vector3 velocity(kBulletSpeed * dir.x, kBulletSpeed * dir.y, kBulletSpeed * dir.z);
 	//velocity = TransformNomal(velocity, worldTransform_.matWorld_);
 
 
@@ -131,7 +133,7 @@ void Enemy::ApproachFire() {
 	fireTimer = kFireinterval;
 }
 
-void Enemy::OnCollision(){
+void Enemy::OnCollision() {
 	//何もしない
 }
 
@@ -143,4 +145,3 @@ Vector3 Enemy::GetWorldPosition() {
 
 	return worldPos;
 }
-

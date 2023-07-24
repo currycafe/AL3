@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include <cassert>
 #include "AxisIndicator.h"
+#include <list>
 
 GameScene::GameScene() {}
 
@@ -117,72 +118,51 @@ void GameScene::Draw() {
 }
 
 void GameScene::CheckAllCollisions() {
+	const std::list<PlayerBullet*> playerBullets = player_->GetBullets();
+	const std::list<EnemyBullet*> enemyBullets = enemy_->GetBullets();
+
+
+
+	std::list<Collider*>colliders_;
+	colliders_.push_back(player_);
+	colliders_.push_back(enemy_);
+	for (PlayerBullet* bullets : player_->GetBullets()) {
+		colliders_.push_back(bullets);
+	}
+	for (EnemyBullet* bullets : enemy_->GetBullets()) {
+		colliders_.push_back(bullets);
+	}
+
+	std::list<Collider*>::iterator itrA = colliders_.begin();
+	for (;itrA != colliders_.end();++itrA) {
+		//イテレーターAからコライダーAを取得する
+		Collider* colliderA = *itrA;
+
+
+		std::list<Collider*>::iterator itrB = itrA;
+		itrB++;
+		for (;itrB != colliders_.end();++itrB) {
+			Collider* colliderB = *itrB;
+			CheckCollisionPair(colliderA, colliderB);
+		}
+	}
+}
+
+void GameScene::CheckCollisionPair(Collider* colliderA, Collider* colliderB)
+{
+	if (colliderA->GetCollisionAttribute() != colliderB->GetCollisionMask() ||
+		colliderB->GetCollisionAttribute() != colliderA->GetCollisionMask()) {
+		return;
+	}
 	Vector3 posA;
 	Vector3 posB;
-
-	const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
-	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
-
-#pragma region
-	posA = player_->GetWorldPosition();
-	for (EnemyBullet* bullets : enemyBullets) {
-		posB = bullets->GetWorldPosition();
-
-		float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-			(posB.y - posA.y) * (posB.y - posA.y) +
-			(posB.z - posA.z) * (posB.z - posA.z);
-
-		if (distance <= player_->GetRadius() + bullets->GetRadius()) {
-			player_->OnCollision();
-			bullets->OnCollision();
-		}
+	posA = colliderA->GetWorldPosition();
+	posB = colliderB->GetWorldPosition();
+	float distance = (posB.x - posA.x) * (posB.x - posA.x) +
+		(posB.y - posA.y) * (posB.y - posA.y) +
+		(posB.z - posA.z) * (posB.z - posA.z);
+	if (distance <= colliderA->GetRadius() + colliderB->GetRadius()) {
+		colliderA->OnCollision();
+		colliderB->OnCollision();
 	}
-
-#pragma endregion
-
-
-#pragma region
-	posA = enemy_->GetWorldPosition();
-	for (PlayerBullet* bullets : playerBullets) {
-		posB = bullets->GetWorldPosition();
-
-		float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-			(posB.y - posA.y) * (posB.y - posA.y) +
-			(posB.z - posA.z) * (posB.z - posA.z);
-
-		if (distance <= player_->GetRadius() + bullets->GetRadius()) {
-			enemy_->OnCollision();
-			bullets->OnCollision();
-		}
-	}
-#pragma endregion
-
-#pragma region
-	for (PlayerBullet* playerbullets : playerBullets) {
-		for (EnemyBullet* enemybullets : enemyBullets) {
-			posA = playerbullets->GetWorldPosition();
-			posB = enemybullets->GetWorldPosition();
-			float distance = (posB.x - posA.x) * (posB.x - posA.x) +
-				(posB.y - posA.y) * (posB.y - posA.y) +
-				(posB.z - posA.z) * (posB.z - posA.z);
-
-			if (distance <= playerbullets->GetRadius() + enemybullets->GetRadius()) {
-				playerbullets->OnCollision();
-				enemybullets->OnCollision();
-			}
-		}
-	}
-
-
-
-
-
-
-
-#pragma endregion
-
-
-
-
-
 }

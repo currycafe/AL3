@@ -1,4 +1,4 @@
-﻿#include"PlayerBullet.h"
+﻿#include "PlayerBullet.h"
 #include <cassert>
 
 void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
@@ -10,6 +10,8 @@ void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vecto
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	velocity_ = velocity;
+	SetCollisionAttribute(kCollisionAttributePlayer);
+	SetCollisionMask(kCollisionAttributeEnemy);
 }
 
 void PlayerBullet::Update() {
@@ -37,5 +39,3 @@ Vector3 PlayerBullet::GetWorldPosition() {
 
 	return worldPos;
 }
-
-

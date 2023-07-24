@@ -3,6 +3,7 @@
 #include <cassert>
 #include"ImGuiManager.h"
 #include"MathUtility.h"
+#include "CollisionConfig.h"
 
 
 Player::~Player()
@@ -25,6 +26,8 @@ void Player::Initialize(Model* model, uint32_t textureHundle)
 	worldTransform_.Initialize();
 	textureHundle_ = textureHundle;
 	input_ = Input::GetInstance();
+	SetCollisionAttribute(kCollisionAttributePlayer);
+	SetCollisionMask(kCollisionAttributeEnemy);
 }
 
 void Player::Updete()
@@ -119,7 +122,7 @@ void Player::Attack() {
 	}
 }
 
-void Player::OnCollision(){
+void Player::OnCollision() {
 	//何もしない
 }
 
@@ -131,5 +134,3 @@ Vector3 Player::GetWorldPosition() {
 
 	return worldPos;
 }
-
-
