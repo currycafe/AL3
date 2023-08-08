@@ -3,10 +3,16 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "Input.h"
+#include "PlayerBullet.h"
+#include <list>
 
 class Player
 {
 public:
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	~Player();
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -22,6 +28,10 @@ public:
 	/// </summary>
 	/// <param name="viewProjection">ビュープロジェクション(参照渡し)</param>
 	void Draw(ViewProjection& viewProjection);
+	/// <summary>
+	/// 攻撃
+	/// </summary>
+	void Attack();
 
 private:
 	//ワールド変換データ
@@ -32,4 +42,8 @@ private:
 	uint32_t textureHundle_ = 0u;
 	//キーボード入力
 	Input* input_ = nullptr;
+	//主人公の弾(単発)
+	PlayerBullet* bullet_ = nullptr;
+	//主人公の弾(複数)
+	std::list<PlayerBullet*>bullets_;
 };
