@@ -3,7 +3,7 @@
 #include <cassert>
 #include "AxisIndicator.h"
 #include <fstream>
-
+#include"ImGuiManager.h"
 
 GameScene::GameScene() {}
 
@@ -19,7 +19,7 @@ GameScene::~GameScene() {
 	for (Enemy* enemy : enemies_) {
 		delete enemy;
 	}
-
+	delete titleTextureHandle_;
 }
 
 
@@ -31,6 +31,8 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	textureHandle_ = TextureManager::Load("sample.png");
+	titleTexture_= TextureManager::Load("stageSelect0.png");
+
 	model_ = Model::Create();
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
@@ -38,8 +40,10 @@ void GameScene::Initialize() {
 	player_ = new Player();
 	player_->Initialize(model_, textureHandle_, { 0.0f,-5.0f,20.0f });
 
+	title_ = new Title();
+	title_->Initialize(textureHandle_, { 100.0f,50.0f,0.0f });
 
-	AddEnemy({ 0.0f,3.0f,10.0f });
+	AddEnemy({ 0.0f,3.0f,80.0f });
 
 
 
@@ -58,57 +62,98 @@ void GameScene::Initialize() {
 	player_->SetParent(&railCamera_->GetWorldTransformProjection());
 
 	LoadEnemyPopData();
+
+	titleTextureHandle_ = Sprite::Create(titleTexture_, { 0,0 });
+
+
 }
 
 void GameScene::Update() {
-	player_->Updete();
+	switch (scene_)
+	{
+	case GameScene::Scene::title:
+		//title_->Update();
+		Vector2 positeion = titleTextureHandle_->GetPosition();
+		//positeion.x += 4;
+		//positeion.y += 4;
+		titleTextureHandle_->SetPosition(positeion);
 
-	skydome_->Update();
-	railCamera_->Update();
-	CheckAllCollisions();
-	enemyBullets_.remove_if([](EnemyBullet* bullet) {
-		if (bullet->IsDead()) {
-			delete bullet;
-			return true;
+
+		if (input_->PushKey(DIK_Q)) {
+			scene_ = Scene::GamePlay;
 		}
-		return false;
-		});
-	enemies_.remove_if([](Enemy* enemy) {
-		if (enemy->IsDead()) {
-			delete enemy;
-			return true;
+		break;
+
+	case GameScene::Scene::GamePlay:
+
+		player_->Updete();
+
+		skydome_->Update();
+		railCamera_->Update();
+		CheckAllCollisions();
+		enemyBullets_.remove_if([](EnemyBullet* bullet) {
+			if (bullet->IsDead()) {
+				delete bullet;
+				return true;
+			}
+			return false;
+			});
+
+		enemies_.remove_if([](Enemy* enemy) {
+			if (enemy->IsDead()) {
+				delete enemy;
+				return true;
+			}
+			return false;
+			});
+
+		/*if (player_->IsDead()) {
+			delete player_;
+		}*/
+
+
+
+
+		for (Enemy* enemy : enemies_) {
+			enemy->Update();
 		}
-		return false;
-		});
+		for (EnemyBullet* bullet : enemyBullets_) {
+			bullet->Update();
+		}
+		UpdateEnemyPopCommands();
 
-	for (Enemy* enemy : enemies_) {
-		enemy->Update();
-	}
-	for (EnemyBullet* bullet : enemyBullets_) {
-		bullet->Update();
-	}
-	UpdateEnemyPopCommands();
 
-	
 #ifdef  _DEBUG
-	if (input_->TriggerKey(DIK_1)) {
-		isDebugCameraActive_ = true;
-	}
-
-
+		if (input_->TriggerKey(DIK_1)) {
+			isDebugCameraActive_ = true;
+		}
 
 #endif //  _DEBUG
 
-	if (isDebugCameraActive_) {
-		debugCamera_->Update();
-		viewProjection_.matView = debugCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
-		viewProjection_.TransferMatrix();
-	}
-	else if (!isDebugCameraActive_) {
-		viewProjection_.matView = railCamera_->GetViewProjection().matView;
-		viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
-		viewProjection_.TransferMatrix();
+		if (isDebugCameraActive_) {
+			debugCamera_->Update();
+			viewProjection_.matView = debugCamera_->GetViewProjection().matView;
+			viewProjection_.matProjection = debugCamera_->GetViewProjection().matProjection;
+			viewProjection_.TransferMatrix();
+		}
+		else if (!isDebugCameraActive_) {
+			viewProjection_.matView = railCamera_->GetViewProjection().matView;
+			viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
+			viewProjection_.TransferMatrix();
+		}
+
+		break;
+
+	default:
+
+
+
+
+
+
+
+
+		break;
 	}
 
 
@@ -161,6 +206,9 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
+	if (scene_ == GameScene::Scene::title) {
+		titleTextureHandle_->Draw();
+	}
 
 
 	// スプライト描画後処理
@@ -291,7 +339,7 @@ void GameScene::UpdateEnemyPopCommands() {
 
 			int32_t waitTime = atoi(word.c_str());
 
-		//待機開始
+			//待機開始
 			waitFlag_ = true;
 			waitTimer_ = waitTime;
 			//コマンドループを抜けます

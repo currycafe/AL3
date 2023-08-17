@@ -13,6 +13,7 @@
 #include "Skydome.h"
 #include "RailCamera.h"
 #include <sstream>
+#include "Title.h"
 
 
 /// <summary>
@@ -69,8 +70,10 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
-	Sprite* sprite_ = nullptr;
+	Sprite* titleTextureHandle_ = nullptr;
+
 	uint32_t textureHandle_ = 0;
+	uint32_t titleTexture_ = 0;
 
 	/// <summary>
 	/// ゲームシーン用
@@ -81,7 +84,7 @@ private: // メンバ変数
 	ViewProjection viewProjection_;
 
 	Player* player_ = nullptr;
-	
+	Title* title_ = nullptr;
 
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
@@ -98,4 +101,12 @@ private: // メンバ変数
 	bool waitFlag_ = false;
 	int32_t waitTimer_ = 120;
 
+	//Sprite* sprite_ = nullptr;
+
+	enum class Scene {
+		title,
+		GamePlay
+	};
+	Scene scene_ = Scene::title;
+	
 };

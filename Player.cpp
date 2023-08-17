@@ -130,7 +130,7 @@ void Player::Attack() {
 /// ヒットしたらどうするか
 /// </summary>
 void Player::OnCollision() {
-	//何もしない
+	isDead_ = true;
 }
 
 /// <summary>

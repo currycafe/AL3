@@ -70,6 +70,8 @@ public:
 	/// <param name="parent"></param>
 	void SetParent(const WorldTransform* parent);
 
+	bool IsDead() { return isDead_; };
+
 private:
 	/// <summary>
 	/// ワールド変換データ
@@ -105,4 +107,9 @@ private:
 	/// 主人公の半径
 	/// </summary>
 	float radius_ = 1.0f;
+
+	/// <summary>
+	/// デスフラグ
+	/// </summary>
+	bool isDead_ = false;
 };

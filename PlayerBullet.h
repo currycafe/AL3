@@ -30,6 +30,7 @@ public:
 	/// </summary>
 	void OnCollision();
 
+
 	bool IsDead()const { return isDead_; }
 
 	/// <summary>
@@ -83,5 +84,5 @@ private:
 	/// <summary>
 	/// 自弾の半径
 	/// </summary>
-	float radius_ = 1.0f;
+	float radius_ = 10.0f;
 };
