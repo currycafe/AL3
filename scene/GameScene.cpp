@@ -4,6 +4,7 @@
 #include "AxisIndicator.h"
 #include <fstream>
 #include"ImGuiManager.h"
+#include"stdio.h"
 
 GameScene::GameScene() {}
 
@@ -20,6 +21,7 @@ GameScene::~GameScene() {
 		delete enemy;
 	}
 	delete titleTextureHandle_;
+	delete sceneCangeHandle_;
 }
 
 
@@ -31,22 +33,20 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	textureHandle_ = TextureManager::Load("sample.png");
-	titleTexture_= TextureManager::Load("stageSelect0.png");
+	titleTexture_ = TextureManager::Load("stageSelect0.png");
+	sceneCangeTexture_ = TextureManager::Load("Sprite-0001.png");
+
 
 	model_ = Model::Create();
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 
+	enemies_.clear();
+	enemyBullets_.clear();
 	player_ = new Player();
 	player_->Initialize(model_, textureHandle_, { 0.0f,-5.0f,20.0f });
 
-	title_ = new Title();
-	title_->Initialize(textureHandle_, { 100.0f,50.0f,0.0f });
-
 	AddEnemy({ 0.0f,3.0f,80.0f });
-
-
-
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 	AxisIndicator::GetInstance()->SetVisible(true);
@@ -62,13 +62,17 @@ void GameScene::Initialize() {
 	player_->SetParent(&railCamera_->GetWorldTransformProjection());
 
 	LoadEnemyPopData();
-
+	//UpdateEnemyPopCommands();
 	titleTextureHandle_ = Sprite::Create(titleTexture_, { 0,0 });
+	sceneCangeHandle_ = Sprite::Create(sceneCangeTexture_, { 0,0 });
+	sceneCangeHandle_->SetColor(Vector4{ 1,1,1,0 });
+
 
 
 }
 
 void GameScene::Update() {
+	SceneCange(Scene::GamePlay);
 	switch (scene_)
 	{
 	case GameScene::Scene::title:
@@ -79,12 +83,26 @@ void GameScene::Update() {
 		titleTextureHandle_->SetPosition(positeion);
 
 
-		if (input_->PushKey(DIK_Q)) {
-			scene_ = Scene::GamePlay;
-		}
+
+		//Initialize();
+
+
 		break;
 
 	case GameScene::Scene::GamePlay:
+		gameTimer_--;
+		if (gameTimer_ <= 0) {
+			scene_ = Scene::title;
+			gameTimer_ = 300;
+			//Initialize();
+			//player_->Initialize(model_, textureHandle_, { 0.0f,-5.0f,20.0f });
+
+		}
+
+		ImGui::Begin("gameTimer_");
+		ImGui::Text("gameTimer_=%d", gameTimer_);
+		ImGui::End();
+
 
 		player_->Updete();
 
@@ -186,6 +204,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	//model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+
 	player_->Draw(viewProjection_);
 	skydome_->Draw(viewProjection_);
 	for (EnemyBullet* bullet : enemyBullets_) {
@@ -209,7 +228,7 @@ void GameScene::Draw() {
 	if (scene_ == GameScene::Scene::title) {
 		titleTextureHandle_->Draw();
 	}
-
+	sceneCangeHandle_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
@@ -283,8 +302,7 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 	enemyBullets_.push_back(enemyBullet);
 }
 
-void GameScene::AddEnemy(Vector3 pos)
-{
+void GameScene::AddEnemy(Vector3 pos) {
 	Enemy* enemy = new Enemy();
 	enemy->Initialize(model_, pos);
 	enemy->SetPlayer(player_);
@@ -295,10 +313,11 @@ void GameScene::AddEnemy(Vector3 pos)
 void GameScene::LoadEnemyPopData() {
 	std::ifstream file;
 	file.open("Resources/enemyPop.csv");
-	assert(file.is_open());
-
+	//assert(file.is_open());
 	enemyPopComands << file.rdbuf();
+
 	file.close();
+
 }
 
 void GameScene::UpdateEnemyPopCommands() {
@@ -314,7 +333,6 @@ void GameScene::UpdateEnemyPopCommands() {
 
 	while (getline(enemyPopComands, line)) {
 		std::istringstream line_stream(line);
-
 		std::string word;
 		getline(line_stream, word, ',');
 		if (word.find("//") == 0) {
@@ -345,5 +363,39 @@ void GameScene::UpdateEnemyPopCommands() {
 			//コマンドループを抜けます
 			break;
 		}
+		else if (word.find("clear") == 0) {
+			getline(line_stream, word, ',');
+			scene_ = Scene::title;
+			//再度読み込み
+			enemyPopComands.clear();
+			enemyPopComands.seekg(0, std::ios::beg);
+		}
+	}
+}
+
+void GameScene::SceneCange(Scene scene) {
+	if (input_->PushKey(DIK_Q) && IsSceneCangeFlag_ == false) {
+		IsSceneCangeFlag_ = true;
+		IsSceneCangeFlagUp_ = true;
+		IsSceneCangeFlagDown_ = false;
+	}
+
+	if (IsSceneCangeFlag_ == true) {
+		if (IsSceneCangeFlagUp_ == true) {
+			alpha += 0.01f;
+		}
+		if (alpha >= 1.0f && IsSceneCangeFlagUp_ == true) {
+			IsSceneCangeFlagUp_ = false;
+			IsSceneCangeFlagDown_ = true;
+			scene_ = scene;
+		}
+		if (IsSceneCangeFlagDown_ == true) {
+			alpha -= 0.1f;
+		}
+		if (alpha <= 0.0f) {
+			alpha = 0.0f;
+			IsSceneCangeFlag_ = false;
+		}
+		sceneCangeHandle_->SetColor(Vector4{ 1,1,1,alpha });
 	}
 }

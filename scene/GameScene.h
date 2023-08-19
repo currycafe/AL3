@@ -13,8 +13,7 @@
 #include "Skydome.h"
 #include "RailCamera.h"
 #include <sstream>
-#include "Title.h"
-
+#include <stdint.h>
 
 /// <summary>
 /// ゲームシーン
@@ -26,7 +25,7 @@ public: // メンバ関数
 	/// コンストクラタ
 	/// </summary>
 	GameScene();
-	
+
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -56,14 +55,22 @@ public: // メンバ関数
 	/// <summary>
 	/// 敵弾を追加する
 	/// </summary>
-	void AddEnemyBullet(EnemyBullet*enemyBullet);
+	void AddEnemyBullet(EnemyBullet* enemyBullet);
 	const std::list<EnemyBullet*>& GetBullets() { return enemyBullets_; }
 
 
 	void AddEnemy(Vector3 pos);
 	void LoadEnemyPopData();
 	void UpdateEnemyPopCommands();
-	
+
+	enum class Scene {
+		title,
+		GamePlay
+	};
+
+	void SceneCange(Scene scene);
+
+
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
@@ -71,20 +78,22 @@ private: // メンバ変数
 	Audio* audio_ = nullptr;
 
 	Sprite* titleTextureHandle_ = nullptr;
+	Sprite* sceneCangeHandle_ = nullptr;
 
 	uint32_t textureHandle_ = 0;
 	uint32_t titleTexture_ = 0;
+	uint32_t sceneCangeTexture_ = 0;
 
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	
+
 	Model* model_ = nullptr;
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
 
 	Player* player_ = nullptr;
-	Title* title_ = nullptr;
+
 
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
@@ -93,7 +102,7 @@ private: // メンバ変数
 
 	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
-	
+
 	std::list<EnemyBullet*>enemyBullets_;
 	std::list<Enemy*>enemies_;
 	std::stringstream enemyPopComands;
@@ -103,10 +112,14 @@ private: // メンバ変数
 
 	//Sprite* sprite_ = nullptr;
 
-	enum class Scene {
-		title,
-		GamePlay
-	};
 	Scene scene_ = Scene::title;
-	
+
+	uint32_t gameTimer_ = 3000;
+
+	bool IsSceneCangeFlag_ = false;
+	bool IsSceneCangeFlagUp_ = false;
+	bool IsSceneCangeFlagDown_ = false;
+
+	float alpha = 0;
+
 };

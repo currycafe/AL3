@@ -41,6 +41,10 @@ void Player::Updete() {
 		return false;
 		});
 
+	if (isDead_ == true) {
+		return;
+	}
+
 	Vector3 move = { 0,0,0 };
 
 	//主人公の移動処理
@@ -102,6 +106,10 @@ void Player::Updete() {
 /// </summary>
 /// <param name="viewProjection"></param>
 void Player::Draw(ViewProjection& viewProjection) {
+	if (isDead_ == true) {
+		return;
+	}
+
 	model_->Draw(worldTransform_, viewProjection, textureHundle_);
 	/*if (bullet_) {
 		bullet_->Draw(viewProjection);
@@ -131,6 +139,7 @@ void Player::Attack() {
 /// </summary>
 void Player::OnCollision() {
 	isDead_ = true;
+	//bullets_.clear();
 }
 
 /// <summary>
