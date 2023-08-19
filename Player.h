@@ -83,6 +83,9 @@ private:
 	/// </summary>
 	Model* model_ = nullptr;
 
+	Model* bulletModel_ = nullptr;
+
+
 	/// <summary>
 	/// テクスチャハンドル
 	/// </summary>

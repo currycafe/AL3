@@ -13,6 +13,7 @@ GameScene::~GameScene() {
 	delete player_;
 	delete debugCamera_;
 	delete modelSkydome_;
+	delete skydome_;
 	delete railCamera_;
 	for (EnemyBullet* bullet : enemyBullets_) {
 		delete bullet;
@@ -22,12 +23,12 @@ GameScene::~GameScene() {
 	}
 	delete titleTextureHandle_;
 	delete sceneCangeHandle_;
+	delete playerModel_;
 }
 
 
 
 void GameScene::Initialize() {
-
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
@@ -36,21 +37,26 @@ void GameScene::Initialize() {
 	titleTexture_ = TextureManager::Load("stageSelect0.png");
 	sceneCangeTexture_ = TextureManager::Load("Sprite-0001.png");
 
-
 	model_ = Model::Create();
+	playerModel_= Model::CreateFromOBJ("needle_Body", true);
+
+
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
 
-	enemies_.clear();
-	enemyBullets_.clear();
+	//敵を消す
+	//enemies_.clear();
+	//enemyBullets_.clear();
+
 	player_ = new Player();
-	player_->Initialize(model_, textureHandle_, { 0.0f,-5.0f,20.0f });
+	player_->Initialize(playerModel_, textureHandle_, { 0.0f,-5.0f,20.0f });
 
 	AddEnemy({ 0.0f,3.0f,80.0f });
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+
 
 
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
@@ -66,9 +72,6 @@ void GameScene::Initialize() {
 	titleTextureHandle_ = Sprite::Create(titleTexture_, { 0,0 });
 	sceneCangeHandle_ = Sprite::Create(sceneCangeTexture_, { 0,0 });
 	sceneCangeHandle_->SetColor(Vector4{ 1,1,1,0 });
-
-
-
 }
 
 void GameScene::Update() {
@@ -78,13 +81,11 @@ void GameScene::Update() {
 	case GameScene::Scene::title:
 		//title_->Update();
 		Vector2 positeion = titleTextureHandle_->GetPosition();
+		//Initialize();
 		//positeion.x += 4;
 		//positeion.y += 4;
 		titleTextureHandle_->SetPosition(positeion);
-
-
-
-		//Initialize();
+		enemyBullets_.clear();
 
 
 		break;
@@ -94,15 +95,11 @@ void GameScene::Update() {
 		if (gameTimer_ <= 0) {
 			scene_ = Scene::title;
 			gameTimer_ = 300;
-			//Initialize();
-			//player_->Initialize(model_, textureHandle_, { 0.0f,-5.0f,20.0f });
-
 		}
 
 		ImGui::Begin("gameTimer_");
 		ImGui::Text("gameTimer_=%d", gameTimer_);
 		ImGui::End();
-
 
 		player_->Updete();
 
@@ -124,13 +121,6 @@ void GameScene::Update() {
 			}
 			return false;
 			});
-
-		/*if (player_->IsDead()) {
-			delete player_;
-		}*/
-
-
-
 
 		for (Enemy* enemy : enemies_) {
 			enemy->Update();

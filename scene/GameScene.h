@@ -89,6 +89,9 @@ private: // メンバ変数
 	/// </summary>
 
 	Model* model_ = nullptr;
+	Model* playerModel_ = nullptr;
+	Model* playerBulletModel_ = nullptr;
+
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
 

@@ -12,6 +12,7 @@ Player::~Player() {
 	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;
 	}
+	delete bulletModel_;
 }
 
 /// <summary>
@@ -27,6 +28,7 @@ void Player::Initialize(Model* model, uint32_t textureHundle, const Vector3& pos
 	textureHundle_ = textureHundle;
 	input_ = Input::GetInstance();
 	worldTransform_.translation_ = position;
+	bulletModel_= Model::CreateFromOBJ("hammer", true);
 }
 
 /// <summary>
@@ -110,7 +112,7 @@ void Player::Draw(ViewProjection& viewProjection) {
 		return;
 	}
 
-	model_->Draw(worldTransform_, viewProjection, textureHundle_);
+	model_->Draw(worldTransform_, viewProjection);
 	/*if (bullet_) {
 		bullet_->Draw(viewProjection);
 	}*/
@@ -128,7 +130,7 @@ void Player::Attack() {
 		Vector3 velocity(0, 0, kBulletSpeed);
 		velocity = TransformNomal(velocity, worldTransform_.matWorld_);
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, GetWorldPosition(), velocity);
+		newBullet->Initialize(bulletModel_, GetWorldPosition(), velocity);
 		bullet_ = newBullet;
 		bullets_.push_back(newBullet);
 	}
