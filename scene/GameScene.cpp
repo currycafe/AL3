@@ -34,8 +34,8 @@ void GameScene::Initialize() {
 
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
-	//AxisIndicator::GetInstance()->SetVisible(true);
-	//AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	enemy_->SetPlayer(player_);
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
