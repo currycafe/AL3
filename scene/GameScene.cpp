@@ -28,16 +28,14 @@ void GameScene::Initialize() {
 
 	player_ = new Player();
 	player_->Initialize(model_, textureHandle_,{0.0f,-5.0f,20.0f});
-	
-	
 
 	enemy_ = new Enemy();
 	enemy_->Initialize(model_, { 0.0f,0.0f,50.0f });
 
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 
-	AxisIndicator::GetInstance()->SetVisible(true);
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
+	//AxisIndicator::GetInstance()->SetVisible(true);
+	//AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
 	enemy_->SetPlayer(player_);
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
@@ -61,9 +59,6 @@ void GameScene::Update() {
 	if (input_->TriggerKey(DIK_1)) {
 		isDebugCameraActive_ = true;
 	}
-
-
-
 #endif //  _DEBUG
 
 	if (isDebugCameraActive_) {
@@ -188,17 +183,5 @@ void GameScene::CheckAllCollisions() {
 			}
 		}
 	}
-
-
-
-
-
-
-
 #pragma endregion
-
-
-
-
-
 }

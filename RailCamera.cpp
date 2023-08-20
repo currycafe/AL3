@@ -4,9 +4,7 @@
 #include"ImGuiManager.h"
 #include"MathUtility.h"
 
-void RailCamera::Initialize(Vector3 translation, Vector3 rotation)
-{
-
+void RailCamera::Initialize(Vector3 translation, Vector3 rotation) {
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = translation;
 	worldTransform_.rotation_ = rotation;
@@ -38,9 +36,4 @@ void RailCamera::Update()
 	ImGui::DragFloat3("translation", &worldTransform_.translation_.x, 0.01f);
 	ImGui::DragFloat3("rotation", &worldTransform_.rotation_.x, 0.01f);
 	ImGui::End();
-
-	
-
-	
-
 }

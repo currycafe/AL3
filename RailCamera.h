@@ -9,8 +9,8 @@ public:
 	void Initialize(Vector3 translation, Vector3 rotation);
 	void Update();
 
-	ViewProjection& GetViewProjection() { return viewProjection_; }
 	WorldTransform& GetWorldTransformProjection() { return worldTransform_; }
+	ViewProjection& GetViewProjection() { return viewProjection_; }
 
 private:
 	WorldTransform worldTransform_;
