@@ -54,15 +54,15 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
-
-	Sprite* sprite_ = nullptr;
 	uint32_t textureHandle_ = 0;
+	Sprite* sprite_ = nullptr;
+	Model* model_ = nullptr;
+
 
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
 	
-	Model* model_ = nullptr;
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
 
@@ -72,8 +72,6 @@ private: // メンバ変数
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
 	RailCamera* railCamera_ = nullptr;
-	//float imputFloat3[3] = { 0,0,0 };
-
 	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	

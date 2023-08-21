@@ -10,15 +10,10 @@ Player::~Player()
 	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;
 	}
-	/*if (bullet_) {
-		delete bullet_;
-	}*/
-
-
 }
 
 
-void Player::Initialize(Model* model, uint32_t textureHundle, const Vector3& position){
+void Player::Initialize(Model* model, uint32_t textureHundle, const Vector3& position) {
 	assert(model);
 	model_ = model;
 	worldTransform_.Initialize();
@@ -78,8 +73,6 @@ void Player::Updete()
 
 	//行列転送
 	worldTransform_.UpdateMatrix();
-	/*worldTransform_.matWorld_ = MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
-	worldTransform_.TransferMatrix();*/
 
 	ImGui::Begin("player");
 	float sliderValue[3] = { worldTransform_.translation_.x,worldTransform_.translation_.y, worldTransform_.translation_.z };
