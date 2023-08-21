@@ -25,6 +25,9 @@ void Player::Initialize(Model* model, uint32_t textureHundle, const Vector3& pos
 	assert(model);
 	model_ = model;
 	worldTransform_.Initialize();
+	worldTransform_.scale_.x = 3.0f;
+	worldTransform_.scale_.y = 3.0f;
+	worldTransform_.scale_.z = 3.0f;
 	textureHundle_ = textureHundle;
 	input_ = Input::GetInstance();
 	worldTransform_.translation_ = position;

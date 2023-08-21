@@ -23,7 +23,7 @@ public:
 	/// <param name="model"></param>
 	/// <param name="textureHundle"></param>
 	/// <param name="position"></param>
-	void Initialize(Model* model, uint32_t textureHundle, const Vector3& position);
+	void Initialize(Model* model, uint32_t textureHundle,const Vector3& position);
 
 	/// <summary>
 	/// 更新処理

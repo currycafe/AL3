@@ -38,8 +38,9 @@ void GameScene::Initialize() {
 	sceneCangeTexture_ = TextureManager::Load("Sprite-0001.png");
 
 	model_ = Model::Create();
-	playerModel_= Model::CreateFromOBJ("needle_Body", true);
-
+	//playerModel_ = Model::CreateFromOBJ("needle_Body", true);
+	playerModel_ = Model::CreateFromOBJ("spray", true);
+	enemyModel_ = Model::CreateFromOBJ("cockroach", true);
 
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
@@ -56,8 +57,6 @@ void GameScene::Initialize() {
 
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
-
-
 
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	skydome_ = new Skydome();
@@ -294,7 +293,7 @@ void GameScene::AddEnemyBullet(EnemyBullet* enemyBullet) {
 
 void GameScene::AddEnemy(Vector3 pos) {
 	Enemy* enemy = new Enemy();
-	enemy->Initialize(model_, pos);
+	enemy->Initialize(enemyModel_, pos);
 	enemy->SetPlayer(player_);
 	enemy->SetGameScene(this);
 	enemies_.push_back(enemy);
@@ -324,6 +323,7 @@ void GameScene::UpdateEnemyPopCommands() {
 	while (getline(enemyPopComands, line)) {
 		std::istringstream line_stream(line);
 		std::string word;
+
 		getline(line_stream, word, ',');
 		if (word.find("//") == 0) {
 			continue;

@@ -38,9 +38,4 @@ void RailCamera::Update()
 	ImGui::DragFloat3("translation", &worldTransform_.translation_.x, 0.01f);
 	ImGui::DragFloat3("rotation", &worldTransform_.rotation_.x, 0.01f);
 	ImGui::End();
-
-	
-
-	
-
 }

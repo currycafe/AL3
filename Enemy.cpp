@@ -16,7 +16,6 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	assert(model);
 	model_ = model;
 	worldTransform_.Initialize();
-	textureHundle_ = TextureManager::Load("sample.png");
 	worldTransform_.translation_ = position;
 	ApproachFire();
 }
@@ -54,7 +53,7 @@ void Enemy::Update() {
 
 
 void Enemy::Draw(ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection, textureHundle_);
+	model_->Draw(worldTransform_, viewProjection);
 }
 
 

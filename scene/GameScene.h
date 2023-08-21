@@ -91,6 +91,8 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 	Model* playerModel_ = nullptr;
 	Model* playerBulletModel_ = nullptr;
+	Model* enemyModel_ = nullptr;
+	Model* modelSkydome_ = nullptr;
 
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
@@ -104,7 +106,6 @@ private: // メンバ変数
 	//float imputFloat3[3] = { 0,0,0 };
 
 	Skydome* skydome_ = nullptr;
-	Model* modelSkydome_ = nullptr;
 
 	std::list<EnemyBullet*>enemyBullets_;
 	std::list<Enemy*>enemies_;
