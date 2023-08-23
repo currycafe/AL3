@@ -34,7 +34,7 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	textureHandle_ = TextureManager::Load("sample.png");
-	titleTexture_ = TextureManager::Load("stageSelect0.png");
+	titleTexture_ = TextureManager::Load("title.png");
 	sceneCangeTexture_ = TextureManager::Load("Sprite-0001.png");
 
 	model_ = Model::Create();
