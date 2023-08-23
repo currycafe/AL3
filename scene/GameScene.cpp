@@ -267,8 +267,8 @@ void GameScene::UpdateEnemyPopCommands() {
 
 	while (getline(enemyPopComands, line)) {
 		std::istringstream line_stream(line);
-
 		std::string word;
+
 		getline(line_stream, word, ',');
 		if (word.find("//") == 0) {
 			continue;
