@@ -89,7 +89,7 @@ void GameScene::Update() {
 	}
 
 	UpdateEnemyPopCommands();
-	
+
 #ifdef  _DEBUG
 	if (input_->TriggerKey(DIK_1)) {
 		isDebugCameraActive_ = true;
@@ -131,7 +131,7 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 	// 深度バッファクリア
 	dxCommon_->ClearDepthBuffer();
-	
+
 #pragma endregion
 
 #pragma region 3Dオブジェクト描画
@@ -162,7 +162,7 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 	player_->DrawUI();
-	
+
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
