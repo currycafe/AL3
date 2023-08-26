@@ -50,7 +50,7 @@ public:
 	/// <summary>
 	/// インターバル
 	/// </summary>
-	static const int kFireinterval = 30;
+	static const int kFireinterval = 60;
 	void ApproachFire();
 
 	void SetPlayer(Player* player) { player_ = player; }
@@ -108,7 +108,7 @@ private:
 	/// <summary>
 	/// 敵の寿命
 	/// </summary>
-	static const int32_t kLifeTime = 60 * 5;
+	static const int32_t kLifeTime = 60 * 100;
 
 	/// <summary>
 	/// デスタイマー

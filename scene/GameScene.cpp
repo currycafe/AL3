@@ -33,14 +33,13 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
-	textureHandle_ = TextureManager::Load("sample.png");
-	titleTexture_ = TextureManager::Load("title.png");
-	sceneCangeTexture_ = TextureManager::Load("Sprite-0001.png");
+	playerModel_ = Model::CreateFromOBJ("spray", true);
+	enemyModel_ = Model::CreateFromOBJ("cockroach", true);
+
+
 
 	model_ = Model::Create();
 	//playerModel_ = Model::CreateFromOBJ("needle_Body", true);
-	playerModel_ = Model::CreateFromOBJ("spray", true);
-	enemyModel_ = Model::CreateFromOBJ("cockroach", true);
 
 	worldTransform_.Initialize();
 	viewProjection_.Initialize();
@@ -68,40 +67,71 @@ void GameScene::Initialize() {
 
 	LoadEnemyPopData();
 	//UpdateEnemyPopCommands();
+
+
+	//画像読み込み
+	textureHandle_ = TextureManager::Load("sample.png");
+	titleTexture_ = TextureManager::Load("title.png");
+	operationTexture_ = TextureManager::Load("operation.png");
+	supplementTexture_ = TextureManager::Load("Supplement.png");
+	gameClearTexture_ = TextureManager::Load("GameClear.png");
+	gameOverTexture_ = TextureManager::Load("GameOver.png");
+	sceneCangeTexture_ = TextureManager::Load("Sprite-0001.png");
+	level1Texture_ = TextureManager::Load("Level1.png");
+	level2Texture_ = TextureManager::Load("Level2.png");
+	level3Texture_ = TextureManager::Load("Level3.png");
+	level4Texture_ = TextureManager::Load("Level4.png");
+	level5Texture_ = TextureManager::Load("Level5.png");
+
+
+	//画像生成
 	titleTextureHandle_ = Sprite::Create(titleTexture_, { 0,0 });
+	operationTextureHandle_ = Sprite::Create(operationTexture_, { 0,0 });
+	supplementTextureHandle_ = Sprite::Create(supplementTexture_, { 0,0 });
+	gameClearTextureHandle_ = Sprite::Create(gameClearTexture_, { 0,0 });
+	gameOverTextureHandle_ = Sprite::Create(gameOverTexture_, { 0,0 });
+	level1TextureHandle_ = Sprite::Create(level1Texture_, { 0,0 });
+	level2TextureHandle_ = Sprite::Create(level2Texture_, { 0,0 });
+	level3TextureHandle_ = Sprite::Create(level3Texture_, { 0,0 });
+	level4TextureHandle_ = Sprite::Create(level4Texture_, { 0,0 });
+	level5TextureHandle_ = Sprite::Create(level5Texture_, { 0,0 });
+
+	//シーン遷移
 	sceneCangeHandle_ = Sprite::Create(sceneCangeTexture_, { 0,0 });
 	sceneCangeHandle_->SetColor(Vector4{ 1,1,1,0 });
 }
 
 void GameScene::Update() {
-	SceneCange(Scene::GamePlay);
-	switch (scene_)
-	{
-	case GameScene::Scene::title:
-		//title_->Update();
+	if (scene_ == GameScene::Scene::Supplement || scene_ == GameScene::Scene::GamePlay) {
+		SceneCange(Scene::GamePlay);
+	}
+	switch (scene_) {
+	case GameScene::Scene::Title:
 		Vector2 positeion = titleTextureHandle_->GetPosition();
-		//Initialize();
-		//positeion.x += 4;
-		//positeion.y += 4;
+		if (input_->TriggerKey(DIK_RETURN)) {
+			scene_ = Scene::Operation;
+		}
 		titleTextureHandle_->SetPosition(positeion);
 		enemyBullets_.clear();
+		enemies_.clear();
+		player_->SetIsDead(false);
+		break;
 
+	case GameScene::Scene::Operation:
+		if (input_->TriggerKey(DIK_RETURN)) {
+			scene_ = Scene::Supplement;
+		}
+		break;
 
+	case GameScene::Scene::Supplement:
+		if (input_->TriggerKey(DIK_SPACE)) {
+			SceneCange(Scene::GamePlay);
+			//scene_ = Scene::GamePlay;
+		}
 		break;
 
 	case GameScene::Scene::GamePlay:
-		gameTimer_--;
-		if (gameTimer_ <= 0) {
-			scene_ = Scene::title;
-			gameTimer_ = 300;
-		}
-
-		ImGui::Begin("gameTimer_");
-		ImGui::Text("gameTimer_=%d", gameTimer_);
-		ImGui::End();
-
 		player_->Updete();
-
 		skydome_->Update();
 		railCamera_->Update();
 		CheckAllCollisions();
@@ -128,15 +158,11 @@ void GameScene::Update() {
 			bullet->Update();
 		}
 		UpdateEnemyPopCommands();
-
-
 #ifdef  _DEBUG
 		if (input_->TriggerKey(DIK_1)) {
 			isDebugCameraActive_ = true;
 		}
-
 #endif //  _DEBUG
-
 		if (isDebugCameraActive_) {
 			debugCamera_->Update();
 			viewProjection_.matView = debugCamera_->GetViewProjection().matView;
@@ -148,22 +174,22 @@ void GameScene::Update() {
 			viewProjection_.matProjection = railCamera_->GetViewProjection().matProjection;
 			viewProjection_.TransferMatrix();
 		}
-
 		break;
 
-	default:
+	case GameScene::Scene::GameClear:
+		if (input_->TriggerKey(DIK_RETURN)) {
+			scene_ = Scene::Title;
+		}
+		break;
 
 
 
-
-
-
-
-
+	case GameScene::Scene::GameOver:
+		if (input_->TriggerKey(DIK_RETURN)) {
+			scene_ = Scene::Title;
+		}
 		break;
 	}
-
-
 }
 
 void GameScene::Draw() {
@@ -214,8 +240,35 @@ void GameScene::Draw() {
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
-	if (scene_ == GameScene::Scene::title) {
+	if (scene_ == GameScene::Scene::Title) {
 		titleTextureHandle_->Draw();
+	}
+	if (scene_ == GameScene::Scene::Operation) {
+		operationTextureHandle_->Draw();
+	}
+	if (scene_ == GameScene::Scene::Supplement) {
+		supplementTextureHandle_->Draw();
+	}
+	if (scene_ == GameScene::Scene::GameClear) {
+		gameClearTextureHandle_->Draw();
+	}
+	if (scene_ == GameScene::Scene::GameOver) {
+		gameOverTextureHandle_->Draw();
+	}
+	if (scene_ == GameScene::Scene::GamePlay && levelFlag_ == 1) {
+		level1TextureHandle_->Draw();
+	}
+	if (scene_ == GameScene::Scene::GamePlay && levelFlag_ == 2) {
+		level2TextureHandle_->Draw();
+	}
+	if (scene_ == GameScene::Scene::GamePlay && levelFlag_ == 3) {
+		level3TextureHandle_->Draw();
+	}
+	if (scene_ == GameScene::Scene::GamePlay && levelFlag_ == 4) {
+		level4TextureHandle_->Draw();
+	}
+	if (scene_ == GameScene::Scene::GamePlay && levelFlag_ == 5) {
+		level5TextureHandle_->Draw();
 	}
 	sceneCangeHandle_->Draw();
 
@@ -244,6 +297,10 @@ void GameScene::CheckAllCollisions() {
 		if (distance <= player_->GetRadius() + bullets->GetRadius()) {
 			player_->OnCollision();
 			bullets->OnCollision();
+			scene_ = Scene::GameOver;
+			enemyPopComands.clear();
+			enemyPopComands.seekg(0, std::ios::beg);
+			levelFlag_ = 1;
 		}
 	}
 
@@ -353,39 +410,45 @@ void GameScene::UpdateEnemyPopCommands() {
 			//コマンドループを抜けます
 			break;
 		}
+		else if (word.find("count") == 0) {
+			getline(line_stream, word, ',');
+			levelFlag_ += 1;
+		}
 		else if (word.find("clear") == 0) {
 			getline(line_stream, word, ',');
-			scene_ = Scene::title;
+			scene_ = Scene::GameClear;
 			//再度読み込み
 			enemyPopComands.clear();
 			enemyPopComands.seekg(0, std::ios::beg);
+			levelFlag_ = 1;
 		}
 	}
 }
 
 void GameScene::SceneCange(Scene scene) {
-	if (input_->PushKey(DIK_Q) && IsSceneCangeFlag_ == false) {
-		IsSceneCangeFlag_ = true;
-		IsSceneCangeFlagUp_ = true;
-		IsSceneCangeFlagDown_ = false;
+	if (scene_ == GameScene::Scene::Supplement) {
+		if (input_->PushKey(DIK_SPACE) && IsSceneCangeFlag_ == false) {
+			IsSceneCangeFlag_ = true;
+			IsSceneCangeFlagUp_ = true;
+			IsSceneCangeFlagDown_ = false;
+		}
 	}
-
 	if (IsSceneCangeFlag_ == true) {
 		if (IsSceneCangeFlagUp_ == true) {
-			alpha += 0.01f;
+			alpha_ += 0.01f;
 		}
-		if (alpha >= 1.0f && IsSceneCangeFlagUp_ == true) {
+		if (alpha_ >= 1.0f && IsSceneCangeFlagUp_ == true) {
 			IsSceneCangeFlagUp_ = false;
 			IsSceneCangeFlagDown_ = true;
 			scene_ = scene;
 		}
 		if (IsSceneCangeFlagDown_ == true) {
-			alpha -= 0.1f;
+			alpha_ -= 0.1f;
 		}
-		if (alpha <= 0.0f) {
-			alpha = 0.0f;
+		if (alpha_ <= 0.0f) {
+			alpha_ = 0.0f;
 			IsSceneCangeFlag_ = false;
 		}
-		sceneCangeHandle_->SetColor(Vector4{ 1,1,1,alpha });
+		sceneCangeHandle_->SetColor(Vector4{ 1,1,1,alpha_ });
 	}
 }

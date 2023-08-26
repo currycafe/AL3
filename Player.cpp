@@ -32,6 +32,7 @@ void Player::Initialize(Model* model, uint32_t textureHundle, const Vector3& pos
 	input_ = Input::GetInstance();
 	worldTransform_.translation_ = position;
 	bulletModel_= Model::CreateFromOBJ("hammer", true);
+	isDead_ = false;
 }
 
 /// <summary>
@@ -54,16 +55,16 @@ void Player::Updete() {
 
 	//主人公の移動処理
 	const float kCharacterSpeed = 0.2f;
-	if (input_->PushKey(DIK_LEFT)) {
+	if (input_->PushKey(DIK_A)) {
 		move.x -= kCharacterSpeed;
 	}
-	if (input_->PushKey(DIK_RIGHT)) {
+	if (input_->PushKey(DIK_D)) {
 		move.x += kCharacterSpeed;
 	}
-	if (input_->PushKey(DIK_UP)) {
+	if (input_->PushKey(DIK_W)) {
 		move.y += kCharacterSpeed;
 	}
-	if (input_->PushKey(DIK_DOWN)) {
+	if (input_->PushKey(DIK_S)) {
 		move.y -= kCharacterSpeed;
 	}
 	worldTransform_.translation_.x += move.x;
@@ -80,8 +81,8 @@ void Player::Updete() {
 	//}
 
 	//主人公の移動制限
-	const float kMoveLimitX = 15.0f;
-	const float kMoveLimitY = 15.0f;
+	const float kMoveLimitX = 13.0f;
+	const float kMoveLimitY = 8.0f;
 	worldTransform_.translation_.x = max(worldTransform_.translation_.x, -kMoveLimitX);
 	worldTransform_.translation_.x = min(worldTransform_.translation_.x, +kMoveLimitX);
 	worldTransform_.translation_.y = max(worldTransform_.translation_.y, -kMoveLimitY);

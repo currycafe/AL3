@@ -28,7 +28,7 @@ void Enemy::Update() {
 	switch (phase_) {
 	case Enemy::Phase::Approach:
 	default:
-		//今、止めてます。0.0です
+		//手前に0.2ずつ来る
 		worldTransform_.translation_.z -= 0.2f;
 		if (worldTransform_.translation_.z < 0.0f) {
 			phase_ = Enemy::Phase::Leave;

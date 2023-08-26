@@ -23,7 +23,7 @@ public:
 	/// <param name="model"></param>
 	/// <param name="textureHundle"></param>
 	/// <param name="position"></param>
-	void Initialize(Model* model, uint32_t textureHundle,const Vector3& position);
+	void Initialize(Model* model, uint32_t textureHundle, const Vector3& position);
 
 	/// <summary>
 	/// 更新処理
@@ -70,7 +70,8 @@ public:
 	/// <param name="parent"></param>
 	void SetParent(const WorldTransform* parent);
 
-	bool IsDead() { return isDead_; };
+	void SetIsDead(bool isDead) { this->isDead_ = isDead; };
+	bool GetIsDead() { return isDead_; };
 
 private:
 	/// <summary>
@@ -82,7 +83,6 @@ private:
 	/// モデル
 	/// </summary>
 	Model* model_ = nullptr;
-
 	Model* bulletModel_ = nullptr;
 
 
