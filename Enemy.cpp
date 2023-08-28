@@ -18,16 +18,15 @@ void Enemy::Initialize(Model* model, const Vector3& position) {
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	ApproachFire();
+	//worldTransform_.UpdateMatrix();
 }
 
 /// <summary>
 /// 更新処理
 /// </summary>
 void Enemy::Update() {
-	worldTransform_.UpdateMatrix();
 	switch (phase_) {
 	case Enemy::Phase::Approach:
-	default:
 		//手前に0.2ずつ来る
 		worldTransform_.translation_.z -= 0.2f;
 		if (worldTransform_.translation_.z < 0.0f) {
@@ -48,6 +47,7 @@ void Enemy::Update() {
 	if (--deathTimer_ <= 0) {
 		isDead_ = true;
 	}
+	worldTransform_.UpdateMatrix();
 
 }
 

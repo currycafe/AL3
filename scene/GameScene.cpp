@@ -36,8 +36,6 @@ void GameScene::Initialize() {
 	playerModel_ = Model::CreateFromOBJ("spray", true);
 	enemyModel_ = Model::CreateFromOBJ("cockroach", true);
 
-
-
 	model_ = Model::Create();
 	//playerModel_ = Model::CreateFromOBJ("needle_Body", true);
 
@@ -135,6 +133,7 @@ void GameScene::Update() {
 		skydome_->Update();
 		railCamera_->Update();
 		CheckAllCollisions();
+		UpdateEnemyPopCommands();
 		enemyBullets_.remove_if([](EnemyBullet* bullet) {
 			if (bullet->IsDead()) {
 				delete bullet;
@@ -157,7 +156,6 @@ void GameScene::Update() {
 		for (EnemyBullet* bullet : enemyBullets_) {
 			bullet->Update();
 		}
-		UpdateEnemyPopCommands();
 #ifdef  _DEBUG
 		if (input_->TriggerKey(DIK_1)) {
 			isDebugCameraActive_ = true;
@@ -181,8 +179,6 @@ void GameScene::Update() {
 			scene_ = Scene::Title;
 		}
 		break;
-
-
 
 	case GameScene::Scene::GameOver:
 		if (input_->TriggerKey(DIK_RETURN)) {
@@ -305,7 +301,6 @@ void GameScene::CheckAllCollisions() {
 	}
 
 #pragma endregion
-
 
 #pragma region
 	for (Enemy* enemy : enemies_) {

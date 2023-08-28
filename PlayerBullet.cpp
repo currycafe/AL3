@@ -10,7 +10,10 @@
 void PlayerBullet::Initialize(Model* model, const Vector3& position, const Vector3& velocity) {
 	assert(model);
 	model_ = model;
-	texturehandle_ = TextureManager::Load("sample.png");
+	texturehandle_ = TextureManager::Load("hammer.png");
+	worldTransform_.scale_.x = 30.0f;
+	worldTransform_.scale_.y = 30.0f;
+	worldTransform_.scale_.z = 30.0f;
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
 	velocity_ = velocity;
