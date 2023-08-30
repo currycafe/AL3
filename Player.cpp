@@ -100,11 +100,11 @@ void Player::Updete() {
 	}
 
 	//デバッグ表示
-	ImGui::Begin("player");
+	/*ImGui::Begin("player");
 	float sliderValue[3] = { worldTransform_.translation_.x,worldTransform_.translation_.y, worldTransform_.translation_.z };
 	ImGui::SliderFloat3("position", sliderValue, -20.0f, 20.0f);
 	worldTransform_.translation_ = { sliderValue[0],sliderValue[1],sliderValue[2] };
-	ImGui::End();
+	ImGui::End();*/
 }
 
 /// <summary>

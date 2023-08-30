@@ -97,16 +97,24 @@ void GameScene::Initialize() {
 	//シーン遷移
 	sceneCangeHandle_ = Sprite::Create(sceneCangeTexture_, { 0,0 });
 	sceneCangeHandle_->SetColor(Vector4{ 1,1,1,0 });
+
+	soundHandle_ = audio_->LoadWave("051_long_BPM140.wav");
+	audio_->PlayWave(soundHandle_);
+	clearHandle_ = audio_->LoadWave("se_amd03.wav");
+	shotHandle_ = audio_->LoadWave("sd006_05.wav");
+	selectHandle_ = audio_->LoadWave("se_sab03.wav");
+	gameOverHandle_ = audio_->LoadWave("se_sua02.wav");
 }
 
 void GameScene::Update() {
 	if (scene_ == GameScene::Scene::Supplement || scene_ == GameScene::Scene::GamePlay) {
-		SceneCange(Scene::GamePlay);
+		SceneCange(Scene::GamePlay);  
 	}
 	switch (scene_) {
 	case GameScene::Scene::Title:
 		Vector2 positeion = titleTextureHandle_->GetPosition();
 		if (input_->TriggerKey(DIK_RETURN)) {
+			audio_->PlayWave(selectHandle_, false, 1.0f);
 			scene_ = Scene::Operation;
 		}
 		titleTextureHandle_->SetPosition(positeion);
@@ -117,12 +125,14 @@ void GameScene::Update() {
 
 	case GameScene::Scene::Operation:
 		if (input_->TriggerKey(DIK_RETURN)) {
+			audio_->PlayWave(selectHandle_, false, 1.0f);
 			scene_ = Scene::Supplement;
 		}
 		break;
 
 	case GameScene::Scene::Supplement:
 		if (input_->TriggerKey(DIK_SPACE)) {
+			audio_->PlayWave(selectHandle_, false, 1.0f);
 			SceneCange(Scene::GamePlay);
 			//scene_ = Scene::GamePlay;
 		}
@@ -134,6 +144,9 @@ void GameScene::Update() {
 		railCamera_->Update();
 		CheckAllCollisions();
 		UpdateEnemyPopCommands();
+		if (input_->TriggerKey(DIK_SPACE)) {
+			audio_->PlayWave(shotHandle_, false, 1.0f);
+		}
 		enemyBullets_.remove_if([](EnemyBullet* bullet) {
 			if (bullet->IsDead()) {
 				delete bullet;
@@ -176,12 +189,14 @@ void GameScene::Update() {
 
 	case GameScene::Scene::GameClear:
 		if (input_->TriggerKey(DIK_RETURN)) {
+			audio_->PlayWave(selectHandle_, false, 1.0f);
 			scene_ = Scene::Title;
 		}
 		break;
 
 	case GameScene::Scene::GameOver:
 		if (input_->TriggerKey(DIK_RETURN)) {
+			audio_->PlayWave(selectHandle_, false, 1.0f);
 			scene_ = Scene::Title;
 		}
 		break;
@@ -294,6 +309,7 @@ void GameScene::CheckAllCollisions() {
 			player_->OnCollision();
 			bullets->OnCollision();
 			scene_ = Scene::GameOver;
+			audio_->PlayWave(gameOverHandle_, false, 1.0f);
 			enemyPopComands.clear();
 			enemyPopComands.seekg(0, std::ios::beg);
 			levelFlag_ = 1;
@@ -411,6 +427,7 @@ void GameScene::UpdateEnemyPopCommands() {
 		}
 		else if (word.find("clear") == 0) {
 			getline(line_stream, word, ',');
+			audio_->PlayWave(clearHandle_, false, 1.0f);
 			scene_ = Scene::GameClear;
 			//再度読み込み
 			enemyPopComands.clear();

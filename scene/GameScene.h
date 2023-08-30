@@ -113,6 +113,11 @@ private: // メンバ変数
 	float alpha_ = 0;
 	int levelFlag_ = 1;
 
+
+
+
+
+
 	//画像の読み込みとモデルの方々
 	uint32_t textureHandle_ = 0;
 	uint32_t titleTexture_ = 0;
@@ -146,4 +151,10 @@ private: // メンバ変数
 	Model* enemyModel_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 
+
+	uint32_t soundHandle_ = 0;
+	uint32_t shotHandle_ = 0;
+	uint32_t clearHandle_ = 0;
+	uint32_t selectHandle_ = 0;
+	uint32_t gameOverHandle_ = 0;
 };
