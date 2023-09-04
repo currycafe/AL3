@@ -26,12 +26,11 @@ GameScene::~GameScene() {
 	delete playerModel_;
 }
 
-
-
 void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
+
 
 	playerModel_ = Model::CreateFromOBJ("spray", true);
 	enemyModel_ = Model::CreateFromOBJ("cockroach", true);
