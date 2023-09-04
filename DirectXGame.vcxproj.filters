@@ -87,9 +87,6 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyBullet.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Skydome.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>

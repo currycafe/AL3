@@ -110,7 +110,6 @@
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="math\Matrix4x4.cpp" />
