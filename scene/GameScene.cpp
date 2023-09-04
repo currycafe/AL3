@@ -11,6 +11,7 @@ void GameScene::Initialize() {
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
 
+
 }
 
 void GameScene::Update() {}
