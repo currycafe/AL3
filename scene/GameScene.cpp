@@ -1,6 +1,8 @@
 #include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include "ImGuiManager.h"
+
 
 GameScene::GameScene() {}
 
@@ -14,7 +16,17 @@ void GameScene::Initialize() {
 
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	_XINPUT_GAMEPAD A = {};
+	ImGui::Begin("asdghj");
+	ImGui::Text("state.a=%d", A.wButtons & XINPUT_GAMEPAD_DPAD_DOWN);
+	ImGui::Text("state.a=%d", A.wButtons & XINPUT_GAMEPAD_DPAD_DOWN);
+	ImGui::Text("state.a=%d", A.wButtons & XINPUT_GAMEPAD_X);
+	ImGui::Text("state.a=%d", A.wButtons & XINPUT_GAMEPAD_Y);
+	ImGui::End();
+
+
+}
 
 void GameScene::Draw() {
 

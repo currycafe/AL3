@@ -68,6 +68,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			break;
 		}
 
+
+		
+
+
 		// ImGui受付開始
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
@@ -91,6 +95,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		imguiManager->Draw();
 		// 描画終了
 		dxCommon->PostDraw();
+
+
+
+		
 	}
 
 	// 各種解放
