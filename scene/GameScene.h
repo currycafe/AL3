@@ -48,9 +48,12 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	
-	
-	
-	
-	
+	int numberHandle[10];
+	int number = 54825;
+	int eachNumber[5] = {};
+	int flag = 1;
+
+
+
+
 };
