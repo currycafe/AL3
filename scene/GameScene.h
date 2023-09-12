@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "Score.h"
 
 /// <summary>
 /// ゲームシーン
@@ -48,36 +49,8 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
-	
-	int number_ = 54825;
-	int eachNumber[5] = {};
-	int flag_ = 1;
 
-	uint32_t Handle0_ = 0;
-	uint32_t Handle1_ = 0;
-	uint32_t Handle2_ = 0;
-	uint32_t Handle3_ = 0;
-	uint32_t Handle4_ = 0;
-	uint32_t Handle5_ = 0;
-	uint32_t Handle6_ = 0;
-	uint32_t Handle7_ = 0;
-	uint32_t Handle8_ = 0;
-	uint32_t Handle9_ = 0;
-
-	/*uint32_t numberHandle_ = {
-
-
-	};*/
-	Sprite* TextureHandle0_ = nullptr;
-	Sprite* TextureHandle1_ = nullptr;
-	Sprite* TextureHandle2_ = nullptr;
-	Sprite* TextureHandle3_ = nullptr;
-	Sprite* TextureHandle4_ = nullptr;
-	Sprite* TextureHandle5_ = nullptr;
-	Sprite* TextureHandle6_ = nullptr;
-	Sprite* TextureHandle7_ = nullptr;
-	Sprite* TextureHandle8_ = nullptr;
-	Sprite* TextureHandle9_ = nullptr;
-
+	Score* score_ = nullptr;
+	uint32_t scoreNumber = 0;
 
 };
